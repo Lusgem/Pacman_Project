@@ -1,9 +1,9 @@
 public interface ControleurGame {
-    void init();
+    void restart();
 
     void pause();
 
-    void launch();
+    void run();
 
     void step();
 

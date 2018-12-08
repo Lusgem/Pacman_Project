@@ -1,36 +1,41 @@
 import java.util.ArrayList;
-import java.util.List;
+
 
 public abstract class Game implements Runnable, Sujet {
 
+    int compteur=0;
+    int tours_max;
+    boolean running;
+    boolean over;
+    long time=1000;
+
+    ArrayList<Observateur> observateurs = new ArrayList<Observateur>();
+    Thread thread;
+
+    public Game(int tours_max){
+        this.tours_max=tours_max;
+        running=true;
+        over=false;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public boolean isOver(){
+        return over;
+    }
 
     public int getCompteur() {
         return compteur;
     }
 
-    int compteur=0;
-    int tours_max;
-    boolean isRunning;
-    long time=1000;
-    Thread thread;
-
-    public Game(int tours_max){
-        this.tours_max=tours_max;
-        isRunning=true;
-    }
-
-    public boolean isRunning() {
-        return isRunning;
-    }
-
-
-
-    private List<Observateur> observateurs = new ArrayList<Observateur>();
-
+    @Override
     public void enregistrerObservateur(Observateur observateur){
         observateurs.add(observateur);
     }
 
+    @Override
     public void supprimerObservateur(Observateur observateur){
         observateurs.remove(observateur);
     }
@@ -46,39 +51,48 @@ public abstract class Game implements Runnable, Sujet {
     protected abstract void takeTurn();
     protected abstract void gameOver();
 
+
+
     public void init(){
         compteur = 0;
+        notifierObservateur();
         initializegame();
     }
 
     public void step(){
-        if(compteur<tours_max)
+        if(compteur<tours_max) {
+            compteur++;
+            notifierObservateur();
             takeTurn();
+        }
         else
-            gameOver();
+            over = true;
     }
 
 
     public void launch(){
+        running=true;
+        over=false;
+        notifierObservateur();
         thread = new Thread(this);
         thread.start();
-        isRunning = true;
     }
 
     public void run(){
-        init();
-        while(isRunning && compteur<=tours_max){
+        while(isRunning() && !isOver()){
             step();
             try {
                 Thread.sleep(time);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
+        if (isOver()){
+            gameOver();
+        }
     }
     protected void stop(){
-        isRunning=false;
+        running=false;
     }
 
     public void setTime(long time) {

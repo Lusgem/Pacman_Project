@@ -1,24 +1,54 @@
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class ViewGame extends JFrame {
+public class ViewGame extends JFrame implements Observateur{
     private SimpleGame game;
     private ControleurGame controleurGame;
+    private JPanel panelGlobal;
+    private JLabel labelTours=new JLabel();
+    private PanelPacmanGame pacmanPanel;
 
-    public ViewGame(SimpleGame game){
-        this.game = game;
-        controleurGame = new ControleurSimpleGame(game);
-        setTitle("Pacman");
+    {
         try {
-            add(new PanelPacmanGame(new Maze("./src/layouts/bigCorners.lay")));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        setSize(500,500);
+    }
+
+    public ViewGame(SimpleGame game){
+        game.enregistrerObservateur(this);
+        this.game = game;
+        Maze maze = null;
+        try {
+            maze = new Maze("./src/layouts/bigCorners.lay");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        pacmanPanel = new PanelPacmanGame(maze);
+        controleurGame = new ControleurSimpleGame(game);
+        setTitle("Pacman");
+        setSize(maze.getSizeX()*15,maze.getSizeY()*15);
+        panelGlobal = new JPanel(new GridLayout(2,1));
+        labelTours.setText("Tour : 0");
+        //labelTours.setPreferredSize(new Dimension(100,100));
+        panelGlobal.add(labelTours,CENTER_ALIGNMENT);
+        //panelGlobal.setSize(100,500);
+        pacmanPanel.setPreferredSize(new Dimension(500,500));
+
+        try {
+            add(panelGlobal,BorderLayout.NORTH);
+            add(pacmanPanel,BorderLayout.SOUTH);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         setVisible(true);
+    }
+
+    @Override
+    public void actualiser() {
+        labelTours.setText("Tour : "+game.getCompteur());
+
     }
 }

@@ -7,17 +7,17 @@ public class ControleurSimpleGame implements ControleurGame{
     }
 
     @Override
-    public void init() {
-        game.initializegame();
+    public void restart() {
+        game.init();
     }
 
     @Override
     public void pause() {
-        game.pause();
+        game.stop();
     }
 
     @Override
-    public void launch() {
+    public void run() {
         game.launch();
     }
 

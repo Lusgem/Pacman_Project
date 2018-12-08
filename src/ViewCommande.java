@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ViewCommande extends JFrame {
+public class ViewCommande extends JFrame implements Observateur {
 
     SimpleGame game;
     ControleurGame controleurGame;
@@ -14,17 +14,18 @@ public class ViewCommande extends JFrame {
     JPanel panelbuttons = new JPanel(grid);
     JPanel panelslide = new JPanel((new GridLayout(1,2)));
     JSlider slider = new JSlider(1,10,1);
-    JLabel turnInfo = new JLabel("Turn : ");
+    JLabel turnInfo = new JLabel("Tour : 0");
     Icon icon_restart  = new ImageIcon("icon_restart.png");
     Icon icon_pause  = new ImageIcon("icon_pause.png");
     Icon icon_run  = new ImageIcon("icon_run.png");
     Icon icon_step  = new ImageIcon("icon_step.png");
-    JButton choixInit = new JButton(icon_restart) ;
+    JButton choixRestart = new JButton(icon_restart) ;
     JButton choixRun = new JButton(icon_run);
     JButton choixStep = new JButton(icon_step);
     JButton choixPause = new JButton(icon_pause);
 
     public ViewCommande(SimpleGame game) {
+        game.enregistrerObservateur(this);
         this.game = game;
         controleurGame = new ControleurSimpleGame(game);
         setLayout(new GridLayout(2, 1));
@@ -43,18 +44,27 @@ public class ViewCommande extends JFrame {
             }
         });
 
+
         panelslide.add(turnInfo);
         setSize(500, 200);
         setLayout(new GridLayout(2, 1));
-        panelbuttons.add(choixInit);
+        panelbuttons.add(choixRestart);
         panelbuttons.add(choixRun);
         panelbuttons.add(choixStep);
         panelbuttons.add(choixPause);
         setVisible(true);
-        choixInit.addActionListener(new ActionListener() {
+
+        choixRun.setEnabled(true);
+        choixRestart.setEnabled(false);
+        choixStep.setEnabled(false);
+        choixPause.setEnabled(false);
+
+
+        choixRestart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                controleurGame.init();
+                controleurGame.restart();
+                choixRestart.setEnabled(false);
             }
         });
 
@@ -62,22 +72,36 @@ public class ViewCommande extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 controleurGame.pause();
+                choixStep.setEnabled(true);
+                choixRun.setEnabled(true);
+                choixRestart.setEnabled(true);
+                choixPause.setEnabled(false);
             }
         });
 
         choixRun.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                controleurGame.launch();
+                controleurGame.run();
+                choixRun.setEnabled(false);
+                choixPause.setEnabled(true);
+                choixStep.setEnabled(false);
+                choixRestart.setEnabled(false);
             }
         });
         choixStep.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 controleurGame.step();
+                choixRestart.setEnabled(true);
             }
         });
 
     }
+
+    @Override
+    public void actualiser() {
+        turnInfo.setText("Tour : "+game.getCompteur());
     }
+}
 

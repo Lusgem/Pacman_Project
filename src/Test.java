@@ -9,7 +9,6 @@ public class Test {
         ViewCommande view = new ViewCommande(g);
         ViewGame viewGame = new ViewGame(g);
 
-        g.launch();
 
     }
 
