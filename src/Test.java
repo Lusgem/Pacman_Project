@@ -1,14 +1,14 @@
-
 public class Test {
 
     /**
      * @param args
      */
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        View view = new View();
 
-        SimpleGame g = new SimpleGame(20,100);
+        SimpleGame g = new SimpleGame(20);
+        ViewCommande view = new ViewCommande(g);
+        ViewGame viewGame = new ViewGame(g);
+
         g.launch();
 
     }

@@ -6,4 +6,6 @@ public interface ControleurGame {
     void launch();
 
     void step();
+
+    void setTime(long time);
 }

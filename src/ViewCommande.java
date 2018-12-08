@@ -1,5 +1,3 @@
-
-
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -7,15 +5,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class View{
-    ControleurGame controleurGame = new SimpleGame(20,1000);
-    JFrame fenetre = new JFrame();
-    JFrame fenetre2 = new JFrame();
+public class ViewCommande extends JFrame {
+
+    SimpleGame game;
+    ControleurGame controleurGame;
 
     GridLayout grid = new GridLayout(1,4);
     JPanel panelbuttons = new JPanel(grid);
     JPanel panelslide = new JPanel((new GridLayout(1,2)));
-    JSlider slider = new JSlider(1,10);
+    JSlider slider = new JSlider(1,10,1);
     JLabel turnInfo = new JLabel("Turn : ");
     Icon icon_restart  = new ImageIcon("icon_restart.png");
     Icon icon_pause  = new ImageIcon("icon_pause.png");
@@ -25,24 +23,34 @@ public class View{
     JButton choixRun = new JButton(icon_run);
     JButton choixStep = new JButton(icon_step);
     JButton choixPause = new JButton(icon_pause);
-    public View(){
-        fenetre.setLayout(new GridLayout(2,1));
-        fenetre.setTitle("Commande");
-        fenetre.add(panelbuttons);
-        fenetre.add(panelslide);
+
+    public ViewCommande(SimpleGame game) {
+        this.game = game;
+        controleurGame = new ControleurSimpleGame(game);
+        setLayout(new GridLayout(2, 1));
+        setTitle("Commandes du jeu");
+        add(panelbuttons);
+        add(panelslide);
         panelslide.add(slider);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
         slider.setMinorTickSpacing(1);
         slider.setMajorTickSpacing(1);
+        slider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent changeEvent) {
+                controleurGame.setTime(1000 / slider.getValue());
+            }
+        });
+
         panelslide.add(turnInfo);
-        fenetre.setSize(500,200);
-        fenetre.setLayout(new GridLayout(2,1));
+        setSize(500, 200);
+        setLayout(new GridLayout(2, 1));
         panelbuttons.add(choixInit);
         panelbuttons.add(choixRun);
         panelbuttons.add(choixStep);
         panelbuttons.add(choixPause);
-        fenetre.setVisible(true);
+        setVisible(true);
         choixInit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -70,13 +78,6 @@ public class View{
             }
         });
 
-        try {
-            fenetre2.add(new PanelPacmanGame(new Maze("./src/layouts/bigCorners.lay")));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        fenetre2.setSize(500,500);
-        fenetre2.setVisible(true);
+    }
     }
 
-}

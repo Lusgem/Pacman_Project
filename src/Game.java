@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Game implements Runnable, ControleurGame, Sujet {
+public abstract class Game implements Runnable, Sujet {
 
 
     public int getCompteur() {
@@ -10,14 +10,20 @@ public abstract class Game implements Runnable, ControleurGame, Sujet {
 
     int compteur=0;
     int tours_max;
+    boolean isRunning;
+    long time=1000;
+    Thread thread;
+
+    public Game(int tours_max){
+        this.tours_max=tours_max;
+        isRunning=true;
+    }
 
     public boolean isRunning() {
         return isRunning;
     }
 
-    boolean isRunning;
-    long time;
-    Thread thread;
+
 
     private List<Observateur> observateurs = new ArrayList<Observateur>();
 
@@ -36,15 +42,10 @@ public abstract class Game implements Runnable, ControleurGame, Sujet {
         }
     }
 
-    public Game(int tours_max, long time){
-        this.tours_max=tours_max;
-        this.time = time;
-        isRunning=true;
-    }
-
     protected abstract void initializegame();
     protected abstract void takeTurn();
     protected abstract void gameOver();
+
     public void init(){
         compteur = 0;
         initializegame();
@@ -66,7 +67,7 @@ public abstract class Game implements Runnable, ControleurGame, Sujet {
 
     public void run(){
         init();
-        while(isRunning==true && compteur<=tours_max){
+        while(isRunning && compteur<=tours_max){
             step();
             try {
                 Thread.sleep(time);
@@ -78,5 +79,9 @@ public abstract class Game implements Runnable, ControleurGame, Sujet {
     }
     protected void stop(){
         isRunning=false;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }
