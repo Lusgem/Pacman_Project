@@ -8,7 +8,6 @@ public class PacmanGame extends Game {
     private ArrayList<PositionAgent> positionPacman = new ArrayList<>();
     private ArrayList<PositionAgent> positionFantomes = new ArrayList<>();
 
-    private Strategie strategie = new StrategieRandom();
     private int compteurVunerable;
     private final int vunerableTime=10;
 
@@ -56,7 +55,7 @@ public class PacmanGame extends Game {
 
         for (Agent a : pacmanAgents){
             while(true) {
-                if (moveAgent(a, strategie.jouer(a, positionPacman, positionFantomes))) {
+                if (moveAgent(a, a.getStrategie().jouer(a, positionPacman, positionFantomes))) {
                 break;
                 }
                 notifierObservateur();
@@ -66,7 +65,7 @@ public class PacmanGame extends Game {
         for (Agent a : fantomesAgents){
 
             while(true) {
-                if (moveAgent(a, strategie.jouer(a, positionPacman, positionFantomes))) {
+                if (moveAgent(a, a.getStrategie().jouer(a, positionPacman, positionFantomes))) {
                 break;
                 }
                 notifierObservateur();
