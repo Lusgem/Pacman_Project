@@ -32,4 +32,16 @@ public class AgentAction {
             vy=0;
         }
     }
+
+    public int getVx() {
+        return vx;
+    }
+
+    public int getVy() {
+        return vy;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
 }

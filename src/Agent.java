@@ -10,4 +10,19 @@ public class Agent {
     }
 
 
+    public PositionAgent getPositionCourante() {
+        return positionCourante;
+    }
+
+    public void setPositionCourante(PositionAgent positionCourante) {
+        this.positionCourante = positionCourante;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
 }

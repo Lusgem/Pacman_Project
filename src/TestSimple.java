@@ -6,7 +6,8 @@ public class TestSimple {
     public static void main(String[] args) {
 
         SimpleGame g = new SimpleGame(20);
-        ViewCommande view = new ViewCommande(g);
+        ControleurSimpleGame controleurSimpleGame = new ControleurSimpleGame(g);
+        ViewCommande view = new ViewCommande(g,controleurSimpleGame);
         ViewGame viewGame = new ViewGame(g);
 
 

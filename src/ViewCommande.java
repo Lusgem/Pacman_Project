@@ -24,7 +24,7 @@ public class ViewCommande extends JFrame implements Observateur {
     JButton choixStep = new JButton(icon_step);
     JButton choixPause = new JButton(icon_pause);
 
-    public ViewCommande(Game game) {
+    public ViewCommande(Game game, ControleurGame controleurGame) {
 
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         Point centerPoint = ge.getCenterPoint();
@@ -34,7 +34,7 @@ public class ViewCommande extends JFrame implements Observateur {
 
         game.enregistrerObservateur(this);
         this.game = game;
-        controleurGame = new ControleurSimpleGame(game);
+        this.controleurGame = controleurGame;
         setLayout(new GridLayout(2, 1));
         setTitle("Commandes du jeu");
         add(panelbuttons);

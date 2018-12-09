@@ -1,12 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ViewGame extends JFrame implements Observateur{
+public class ViewGame extends JFrame implements Observateur {
     private Game game;
     private ControleurGame controleurGame;
     private JPanel panelGlobal;
     private JLabel labelTours=new JLabel();
     private PanelPacmanGame pacmanPanel;
+    Maze maze;
 
     {
         try {
@@ -20,7 +21,7 @@ public class ViewGame extends JFrame implements Observateur{
 
         game.enregistrerObservateur(this);
         this.game = game;
-        Maze maze = null;
+        maze = null;
 
 
         if(game instanceof SimpleGame){
@@ -67,6 +68,14 @@ public class ViewGame extends JFrame implements Observateur{
     @Override
     public void actualiser() {
         labelTours.setText("Tour : "+game.getCompteur());
+        if (game instanceof PacmanGame){
+            System.out.println("her");
+            pacmanPanel.setGhosts_pos(((PacmanGame) game).getPositionFantomes());
+            pacmanPanel.setPacmans_pos(((PacmanGame) game).getPositionPacman());
+            pacmanPanel.repaint();
+            getContentPane().add(pacmanPanel);
+            setVisible(true);
+        }
 
     }
 }

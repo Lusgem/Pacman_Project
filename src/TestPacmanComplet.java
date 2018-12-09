@@ -2,7 +2,6 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
-import java.awt.*;
 import java.io.File;
 
 public class TestPacmanComplet {
@@ -11,11 +10,11 @@ public class TestPacmanComplet {
 
         FileSystemView vueSysteme = FileSystemView.getFileSystemView();
         File defaut = vueSysteme.getDefaultDirectory();
-        File home = vueSysteme.getHomeDirectory();
         File layouts = new File("src/layouts");
         JFileChooser layoutChooser;
-        String filename="";
+        String filename;
         FileFilter filter = new FileNameExtensionFilter("Fichiers .lay uniquement", "lay");
+
 
         if (layouts.exists()){
             layoutChooser = new JFileChooser(layouts);
@@ -39,9 +38,10 @@ public class TestPacmanComplet {
         }
 
         PacmanGame game = new PacmanGame(20,maze);
+        ControleurPacmanGame controleurPacmanGame = new ControleurPacmanGame(game);
 
 
-        ViewCommande view = new ViewCommande(game);
+        ViewCommande view = new ViewCommande(game,controleurPacmanGame);
         ViewGame viewGame = new ViewGame(game);
 
     }
