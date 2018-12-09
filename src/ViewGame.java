@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ViewGame extends JFrame implements Observateur {
+public class ViewGame extends JFrame implements Observateur{
     private Game game;
     private ControleurGame controleurGame;
     private JPanel panelGlobal;
@@ -69,12 +69,16 @@ public class ViewGame extends JFrame implements Observateur {
     public void actualiser() {
         labelTours.setText("Tour : "+game.getCompteur());
         if (game instanceof PacmanGame){
-            System.out.println("her");
             pacmanPanel.setGhosts_pos(((PacmanGame) game).getPositionFantomes());
             pacmanPanel.setPacmans_pos(((PacmanGame) game).getPositionPacman());
+            if(((PacmanGame) game).getFantomesAgents().get(0).getEtat() instanceof  EtatVulnerable){
+                pacmanPanel.setGhostsScarred(true);
+            }
+            else
+                pacmanPanel.setGhostsScarred(false);
+
             pacmanPanel.repaint();
-            getContentPane().add(pacmanPanel);
-            setVisible(true);
+
         }
 
     }

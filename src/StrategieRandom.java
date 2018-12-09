@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 public class StrategieRandom implements Strategie {
+
     @Override
     public AgentAction jouer(Agent a, ArrayList<PositionAgent> positionPacman, ArrayList<PositionAgent> positionFantomes) {
         int nombreAleatoire = (int)(Math.random() * (4));
@@ -13,8 +14,8 @@ public class StrategieRandom implements Strategie {
                 return new AgentAction(Maze.EAST);
             case 3:
                 return new AgentAction(Maze.WEST);
-                default:
-                    return new AgentAction(Maze.NORTH);
+            default:
+                return new AgentAction(Maze.NORTH);
         }
     }
 }

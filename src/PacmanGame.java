@@ -9,6 +9,8 @@ public class PacmanGame extends Game {
     private ArrayList<PositionAgent> positionFantomes = new ArrayList<>();
 
     private Strategie strategie = new StrategieRandom();
+    private int compteurVunerable;
+    private final int vunerableTime=10;
 
 
 
@@ -32,18 +34,25 @@ public class PacmanGame extends Game {
         fantomesAgents.clear();
         positionFantomes = maze.getGhosts_start();
         positionPacman = maze.getPacman_start();
-        notifierObservateur();
         for(PositionAgent pos : maze.getPacman_start()){
             pacmanAgents.add(FabriqueAgents.fabriquePacman(pos));
         }
         for (PositionAgent pos : maze.getGhosts_start()){
             fantomesAgents.add(FabriqueAgents.fabriqueFantome(pos));
         }
+        notifierObservateur();
     }
 
     @Override
     protected void takeTurn() {
-
+        if(fantomesAgents.get(0).getEtat() instanceof EtatVulnerable){
+            compteurVunerable++;
+            if(compteurVunerable>=vunerableTime){
+                for(Agent a : fantomesAgents){
+                    a.setEtat(new EtatInvulnerable());
+                }
+            }
+        }
 
         for (Agent a : pacmanAgents){
             while(true) {
@@ -83,11 +92,20 @@ public class PacmanGame extends Game {
     public boolean moveAgent(Agent agent, AgentAction action){
         if(isLegalMove(agent,action)){
             PositionAgent newPos = new PositionAgent(agent.getPositionCourante().getX()+action.getVx(),agent.getPositionCourante().getY()+action.getVy(),action.getDirection());
-
             if(agent.getType() == Type.PACMAN) {
                 positionPacman.remove(agent.getPositionCourante());
                 agent.setPositionCourante(newPos);
                 positionPacman.add(newPos);
+                if(maze.isFood(newPos.getX(),newPos.getY())){
+                    maze.setFood(newPos.getX(),newPos.getY(),false);
+                }
+                else if(maze.isCapsule(newPos.getX(),newPos.getY())){
+                    maze.setCapsule(newPos.getX(),newPos.getY(),false);
+                    compteurVunerable=0;
+                    for(Agent a : fantomesAgents){
+                        a.setEtat(new EtatVulnerable());
+                    }
+                }
             }
             else {
                 positionFantomes.remove(agent.getPositionCourante());
@@ -138,17 +156,5 @@ public class PacmanGame extends Game {
         this.positionFantomes = positionFantomes;
     }
 
-    public AgentAction moveNorth(){
-        return new AgentAction(Maze.NORTH);
-    }
-    public AgentAction moveSouth(){
-        return new AgentAction(Maze.SOUTH);
-    }
-    public AgentAction moveEast(){
-        return new AgentAction(Maze.EAST);
-    }
-    public AgentAction moveWest(){
-        return new AgentAction(Maze.WEST);
-    }
 
 }

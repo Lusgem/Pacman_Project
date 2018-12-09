@@ -2,6 +2,7 @@ public class Agent {
 
     private Type type;
     private PositionAgent positionCourante;
+    private Etat etat;
 
 
     public Agent(Type type, PositionAgent positionCourante) {
@@ -24,5 +25,13 @@ public class Agent {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public Etat getEtat() {
+        return etat;
+    }
+
+    public void setEtat(Etat etat) {
+        this.etat = etat;
     }
 }

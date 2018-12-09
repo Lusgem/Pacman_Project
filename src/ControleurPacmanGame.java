@@ -28,6 +28,6 @@ public class ControleurPacmanGame implements ControleurGame {
 
     @Override
     public void setTime(long time) {
-
+        game.setTime(time);
     }
 }
