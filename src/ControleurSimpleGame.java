@@ -1,8 +1,8 @@
 public class ControleurSimpleGame implements ControleurGame{
-    private SimpleGame game;
+    private Game game;
 
 
-    public ControleurSimpleGame(SimpleGame game) {
+    public ControleurSimpleGame(Game game) {
         this.game = game;
     }
 

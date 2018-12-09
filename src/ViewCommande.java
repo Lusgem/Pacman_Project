@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class ViewCommande extends JFrame implements Observateur {
 
-    SimpleGame game;
+    Game game;
     ControleurGame controleurGame;
 
     GridLayout grid = new GridLayout(1,4);
@@ -24,7 +24,14 @@ public class ViewCommande extends JFrame implements Observateur {
     JButton choixStep = new JButton(icon_step);
     JButton choixPause = new JButton(icon_pause);
 
-    public ViewCommande(SimpleGame game) {
+    public ViewCommande(Game game) {
+
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Point centerPoint = ge.getCenterPoint();
+        int dx = centerPoint.x  ;
+        int dy = centerPoint.y ;
+        setLocation(dx, dy);
+
         game.enregistrerObservateur(this);
         this.game = game;
         controleurGame = new ControleurSimpleGame(game);
@@ -65,6 +72,9 @@ public class ViewCommande extends JFrame implements Observateur {
             public void actionPerformed(ActionEvent actionEvent) {
                 controleurGame.restart();
                 choixRestart.setEnabled(false);
+                choixRun.setEnabled(true);
+                choixPause.setEnabled(false);
+                choixStep.setEnabled(false);
             }
         });
 
@@ -102,6 +112,12 @@ public class ViewCommande extends JFrame implements Observateur {
     @Override
     public void actualiser() {
         turnInfo.setText("Tour : "+game.getCompteur());
+        if(game.isOver()){
+            choixRun.setEnabled(false);
+            choixRestart.setEnabled(true);
+            choixStep.setEnabled(false);
+            choixPause.setEnabled(false);
+        }
     }
 }
 

@@ -89,6 +89,7 @@ public abstract class Game implements Runnable, Sujet {
         }
         if (isOver()){
             gameOver();
+            notifierObservateur();
         }
     }
     protected void stop(){
