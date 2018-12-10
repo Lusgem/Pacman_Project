@@ -1,9 +1,16 @@
+import sun.applet.AppletAudioClip;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class ViewCommande extends JFrame implements Observateur {
 
@@ -23,6 +30,12 @@ public class ViewCommande extends JFrame implements Observateur {
     JButton choixRun = new JButton(icon_run);
     JButton choixStep = new JButton(icon_step);
     JButton choixPause = new JButton(icon_pause);
+    AudioClip mainTheme;
+
+
+
+
+
 
     public ViewCommande(Game game, ControleurGame controleurGame) {
 
@@ -31,6 +44,9 @@ public class ViewCommande extends JFrame implements Observateur {
         int dx = centerPoint.x  ;
         int dy = centerPoint.y ;
         setLocation(dx, dy);
+
+
+
 
         game.enregistrerObservateur(this);
         this.game = game;
@@ -119,5 +135,12 @@ public class ViewCommande extends JFrame implements Observateur {
             choixPause.setEnabled(false);
         }
     }
+
+
+
+
+
 }
+
+
 

@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ViewGame extends JFrame implements Observateur{
     private Game game;
@@ -8,6 +9,8 @@ public class ViewGame extends JFrame implements Observateur{
     private JLabel labelTours=new JLabel();
     private PanelPacmanGame pacmanPanel;
     Maze maze;
+    ArrayList<PositionAgent> posFantomes= new ArrayList<>();
+    ArrayList<PositionAgent> posPacman= new ArrayList<>();
 
     {
         try {
@@ -68,9 +71,17 @@ public class ViewGame extends JFrame implements Observateur{
     @Override
     public void actualiser() {
         labelTours.setText("Tour : "+game.getCompteur());
+        posFantomes.clear();
+        posPacman.clear();
         if (game instanceof PacmanGame){
-            pacmanPanel.setGhosts_pos(((PacmanGame) game).getPositionFantomes());
-            pacmanPanel.setPacmans_pos(((PacmanGame) game).getPositionPacman());
+            for(Agent a : ((PacmanGame)game).getFantomesAgents()){
+                posFantomes.add(a.getPositionCourante());
+            }
+            pacmanPanel.setGhosts_pos(posFantomes);
+            for (Agent a: ((PacmanGame) game).getPacmanAgents()){
+                posPacman.add(a.getPositionCourante());
+            }
+            pacmanPanel.setPacmans_pos(posPacman);
             if(((PacmanGame) game).getFantomesAgents().get(0).getEtat() instanceof  EtatVulnerable){
                 pacmanPanel.setGhostsScarred(true);
             }

@@ -2,12 +2,14 @@ public class Agent {
 
     private Type type;
     private PositionAgent positionCourante;
+    private PositionAgent positionInitiale;
     private Etat etat;
     private Strategie strategie = new StrategieRandom();
 
 
     public Agent(Type type, PositionAgent positionCourante) {
         this.type = type;
+        this.positionInitiale = positionCourante;
         this.positionCourante = positionCourante;
     }
 
@@ -42,5 +44,9 @@ public class Agent {
 
     public void setStrategie(Strategie strategie) {
         this.strategie = strategie;
+    }
+
+    public PositionAgent getPositionInitiale() {
+        return positionInitiale;
     }
 }

@@ -1,2 +1,2 @@
-public class EtatMort {
+public class EtatMort implements Etat {
 }

@@ -1,3 +1,8 @@
+import java.applet.Applet;
+import java.applet.AudioClip;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class PacmanGame extends Game {
@@ -5,11 +10,21 @@ public class PacmanGame extends Game {
     private Maze maze;
     private ArrayList<Agent> pacmanAgents = new ArrayList<Agent>();
     private ArrayList<Agent> fantomesAgents = new ArrayList<Agent>();
-    private ArrayList<PositionAgent> positionPacman = new ArrayList<>();
-    private ArrayList<PositionAgent> positionFantomes = new ArrayList<>();
 
+
+    // Fichiers musicaux pour les bruitages et la musique du jeu
+    // Trouvés sur http://www.classicgaming.cc/classics/pac-man/sounds
+    private AudioClip mainTheme;
+    private AudioClip eatFood;
+    private AudioClip ghostVulnerable;
+    private AudioClip deathOfPacman;
+    private ArrayList<AudioClip> listMusic = new ArrayList<>();
+
+
+
+    //Nombre de périodes de vulnérabilité
     private int compteurVunerable;
-    private final int vunerableTime=10;
+    private final int vunerableTime=20;
 
 
 
@@ -17,22 +32,31 @@ public class PacmanGame extends Game {
     public PacmanGame(int tours_max, Maze maze) {
         super(tours_max);
         this.maze=maze;
-        positionPacman= maze.getPacman_start();
-        positionFantomes = maze.getGhosts_start();
-        for(PositionAgent pos : positionPacman){
+
+        for(PositionAgent pos : maze.getPacman_start()){
             pacmanAgents.add(FabriqueAgents.fabriquePacman(pos));
         }
-        for (PositionAgent pos : positionFantomes){
+        for (PositionAgent pos : maze.getGhosts_start()){
             fantomesAgents.add(FabriqueAgents.fabriqueFantome(pos));
         }
+
+        mainTheme = initMusic("src/Music/pacman_beginning.wav");
+        eatFood = initMusic("src/Music/pacman_chomp.wav");
+        ghostVulnerable = initMusic("src/Music/pacman_intermission.wav");
+        deathOfPacman = initMusic("src/Music/pacman_death.wav");
+        listMusic.add(mainTheme);
+        listMusic.add(ghostVulnerable);
+        listMusic.add(eatFood);
+        listMusic.add(deathOfPacman);
+
+        mainTheme.play();
     }
 
     @Override
     protected void initializegame() {
         pacmanAgents.clear();
         fantomesAgents.clear();
-        positionFantomes = maze.getGhosts_start();
-        positionPacman = maze.getPacman_start();
+
         for(PositionAgent pos : maze.getPacman_start()){
             pacmanAgents.add(FabriqueAgents.fabriquePacman(pos));
         }
@@ -47,6 +71,8 @@ public class PacmanGame extends Game {
         if(fantomesAgents.get(0).getEtat() instanceof EtatVulnerable){
             compteurVunerable++;
             if(compteurVunerable>=vunerableTime){
+                //Arrete la musique correspondant au moment de vulnérabilité et change l'état des fantomes
+                ghostVulnerable.stop();
                 for(Agent a : fantomesAgents){
                     a.setEtat(new EtatInvulnerable());
                 }
@@ -55,7 +81,7 @@ public class PacmanGame extends Game {
 
         for (Agent a : pacmanAgents){
             while(true) {
-                if (moveAgent(a, a.getStrategie().jouer(a, positionPacman, positionFantomes))) {
+                if (moveAgent(a, a.getStrategie().jouer(a,maze))) {
                 break;
                 }
                 notifierObservateur();
@@ -65,7 +91,7 @@ public class PacmanGame extends Game {
         for (Agent a : fantomesAgents){
 
             while(true) {
-                if (moveAgent(a, a.getStrategie().jouer(a, positionPacman, positionFantomes))) {
+                if (moveAgent(a, a.getStrategie().jouer(a, maze))) {
                 break;
                 }
                 notifierObservateur();
@@ -77,7 +103,9 @@ public class PacmanGame extends Game {
 
     @Override
     protected void gameOver() {
-
+        System.out.println("Game Over");
+        stopMusic();
+        init();
     }
 
     public Maze getMaze() {
@@ -92,24 +120,26 @@ public class PacmanGame extends Game {
         if(isLegalMove(agent,action)){
             PositionAgent newPos = new PositionAgent(agent.getPositionCourante().getX()+action.getVx(),agent.getPositionCourante().getY()+action.getVy(),action.getDirection());
             if(agent.getType() == Type.PACMAN) {
-                positionPacman.remove(agent.getPositionCourante());
+
                 agent.setPositionCourante(newPos);
-                positionPacman.add(newPos);
+
+
                 if(maze.isFood(newPos.getX(),newPos.getY())){
                     maze.setFood(newPos.getX(),newPos.getY(),false);
+                    eatFood.play();
                 }
                 else if(maze.isCapsule(newPos.getX(),newPos.getY())){
                     maze.setCapsule(newPos.getX(),newPos.getY(),false);
                     compteurVunerable=0;
+                    ghostVulnerable.loop();
                     for(Agent a : fantomesAgents){
                         a.setEtat(new EtatVulnerable());
                     }
                 }
+
             }
             else {
-                positionFantomes.remove(agent.getPositionCourante());
                 agent.setPositionCourante(newPos);
-                positionFantomes.add(newPos);
             }
             notifierObservateur();
             return true;
@@ -139,20 +169,34 @@ public class PacmanGame extends Game {
         this.fantomesAgents = fantomesAgents;
     }
 
-    public ArrayList<PositionAgent> getPositionPacman() {
-        return positionPacman;
+    /**
+     * Fonction permettant d'initialiser une musique à partir d'un fichier
+     * @param path
+     * @return
+     */
+    public AudioClip initMusic(String path){
+        File file = new File(path);
+        URL url = null;
+        if (file.canRead()) {
+            try {
+                url = file.toURI().toURL();
+
+            } catch (MalformedURLException e1) {
+                e1.printStackTrace();
+            }
+            return Applet.newAudioClip(url);
+        }
+        return  null;
+
     }
 
-    public void setPositionPacman(ArrayList<PositionAgent> positionPacman) {
-        this.positionPacman = positionPacman;
-    }
-
-    public ArrayList<PositionAgent> getPositionFantomes() {
-        return positionFantomes;
-    }
-
-    public void setPositionFantomes(ArrayList<PositionAgent> positionFantomes) {
-        this.positionFantomes = positionFantomes;
+    /**
+     * Fonction servant à stopper toutes les musiques lors de l'arret du jeu (Game over ou victoire)
+     */
+    public void stopMusic(){
+        for(AudioClip audioClip : listMusic){
+            audioClip.stop();
+        }
     }
 
 
