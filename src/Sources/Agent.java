@@ -1,6 +1,8 @@
 package Sources;
 
 import Sources.Etat.Etat;
+import Sources.Strategie.Strategie;
+import Sources.Strategie.StrategieRandom;
 
 public class Agent {
 

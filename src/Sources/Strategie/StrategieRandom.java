@@ -1,9 +1,13 @@
-package Sources;
+package Sources.Strategie;
+
+import Sources.Agent;
+import Sources.AgentAction;
+import Sources.Maze;
 
 public class StrategieRandom implements Strategie {
 
     @Override
-    public AgentAction jouer(Agent a,Maze maze) {
+    public AgentAction jouer(Agent a, Maze maze) {
         int nombreAleatoire = (int)(Math.random() * (4));
         switch (nombreAleatoire){
             case 0:

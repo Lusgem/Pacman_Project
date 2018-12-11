@@ -2,7 +2,6 @@ package Sources.View;
 
 import Sources.Controleur.ControleurGame;
 import Sources.Game;
-import Sources.Observateur;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

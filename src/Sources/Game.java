@@ -1,5 +1,7 @@
 package Sources;
 
+import Sources.View.Observateur;
+
 import java.util.ArrayList;
 
 
