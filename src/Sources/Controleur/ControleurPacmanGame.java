@@ -1,3 +1,7 @@
+package Sources.Controleur;
+
+import Sources.Game;
+
 public class ControleurPacmanGame implements ControleurGame {
 
     private Game game;

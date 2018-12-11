@@ -1,3 +1,5 @@
+package Sources;
+
 public class AgentAction {
 
     //Vecteur de déplacement qui sera utile pour réaliser l'action dans le jeu

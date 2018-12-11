@@ -1,8 +1,15 @@
+package Sources.View;
+
+import Sources.*;
+import Sources.Controleur.ControleurGame;
+import Sources.Controleur.ControleurSimpleGame;
+import Sources.Etat.EtatVulnerable;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class ViewGame extends JFrame implements Observateur{
+public class ViewGame extends JFrame implements Observateur {
     private Game game;
     private ControleurGame controleurGame;
     private JPanel panelGlobal;
@@ -82,7 +89,7 @@ public class ViewGame extends JFrame implements Observateur{
                 posPacman.add(a.getPositionCourante());
             }
             pacmanPanel.setPacmans_pos(posPacman);
-            if(((PacmanGame) game).getFantomesAgents().get(0).getEtat() instanceof  EtatVulnerable){
+            if(((PacmanGame) game).getFantomesAgents().get(0).getEtat() instanceof EtatVulnerable){
                 pacmanPanel.setGhostsScarred(true);
             }
             else

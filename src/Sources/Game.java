@@ -1,3 +1,5 @@
+package Sources;
+
 import java.util.ArrayList;
 
 
@@ -92,7 +94,7 @@ public abstract class Game implements Runnable, Sujet {
             notifierObservateur();
         }
     }
-    protected void stop(){
+    public void stop(){
         running=false;
     }
 

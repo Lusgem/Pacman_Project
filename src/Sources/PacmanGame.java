@@ -1,3 +1,8 @@
+package Sources;
+
+import Sources.Etat.EtatInvulnerable;
+import Sources.Etat.EtatVulnerable;
+
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.io.File;
@@ -103,7 +108,7 @@ public class PacmanGame extends Game {
 
     @Override
     protected void gameOver() {
-        System.out.println("Game Over");
+        System.out.println("Sources.Game Over");
         stopMusic();
         init();
     }
@@ -191,7 +196,7 @@ public class PacmanGame extends Game {
     }
 
     /**
-     * Fonction servant à stopper toutes les musiques lors de l'arret du jeu (Game over ou victoire)
+     * Fonction servant à stopper toutes les musiques lors de l'arret du jeu (Sources.Game over ou victoire)
      */
     public void stopMusic(){
         for(AudioClip audioClip : listMusic){

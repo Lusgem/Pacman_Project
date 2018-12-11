@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+package Sources;
 
 public class StrategieRandom implements Strategie {
 

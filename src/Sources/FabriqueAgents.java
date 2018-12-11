@@ -1,3 +1,5 @@
+package Sources;
+
 public class FabriqueAgents {
 
     public static Agent fabriquePacman(PositionAgent positionAgent){

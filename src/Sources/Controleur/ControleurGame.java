@@ -1,3 +1,5 @@
+package Sources.Controleur;
+
 public interface ControleurGame {
     void restart();
 

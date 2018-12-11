@@ -1,3 +1,7 @@
+package Sources;
+
+import Sources.Etat.Etat;
+
 public class Agent {
 
     private Type type;
