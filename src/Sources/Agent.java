@@ -6,15 +6,15 @@ import Sources.Strategie.StrategieRandom;
 
 public class Agent {
 
-    private Type type;
+    private TypeAgent typeAgent;
     private PositionAgent positionCourante;
     private PositionAgent positionInitiale;
     private Etat etat;
     private Strategie strategie = new StrategieRandom();
 
 
-    public Agent(Type type, PositionAgent positionCourante) {
-        this.type = type;
+    public Agent(TypeAgent typeAgent, PositionAgent positionCourante) {
+        this.typeAgent = typeAgent;
         this.positionInitiale = positionCourante;
         this.positionCourante = positionCourante;
     }
@@ -28,12 +28,12 @@ public class Agent {
         this.positionCourante = positionCourante;
     }
 
-    public Type getType() {
-        return type;
+    public TypeAgent getTypeAgent() {
+        return typeAgent;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setTypeAgent(TypeAgent typeAgent) {
+        this.typeAgent = typeAgent;
     }
 
     public Etat getEtat() {

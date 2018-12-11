@@ -29,9 +29,6 @@ public class ViewCommande extends JFrame implements Observateur {
     JButton choixRun = new JButton(icon_run);
     JButton choixStep = new JButton(icon_step);
     JButton choixPause = new JButton(icon_pause);
-    AudioClip mainTheme;
-
-
 
 
 

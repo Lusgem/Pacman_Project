@@ -124,10 +124,9 @@ public class PacmanGame extends Game {
     public boolean moveAgent(Agent agent, AgentAction action){
         if(isLegalMove(agent,action)){
             PositionAgent newPos = new PositionAgent(agent.getPositionCourante().getX()+action.getVx(),agent.getPositionCourante().getY()+action.getVy(),action.getDirection());
-            if(agent.getType() == Type.PACMAN) {
+            if(agent.getTypeAgent() == TypeAgent.PACMAN) {
 
                 agent.setPositionCourante(newPos);
-
 
                 if(maze.isFood(newPos.getX(),newPos.getY())){
                     maze.setFood(newPos.getX(),newPos.getY(),false);
