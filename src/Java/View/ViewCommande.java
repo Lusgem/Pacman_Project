@@ -1,12 +1,12 @@
-package Sources.View;
+package Java.View;
 
-import Sources.Controleur.ControleurGame;
-import Sources.Game;
+import Java.Controleur.ControleurGame;
+import Java.Model.Game;
+import Java.Strategie.StrategieJoueur1;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +29,8 @@ public class ViewCommande extends JFrame implements Observateur {
     JButton choixRun = new JButton(icon_run);
     JButton choixStep = new JButton(icon_step);
     JButton choixPause = new JButton(icon_pause);
+
+
 
 
 

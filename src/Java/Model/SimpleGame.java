@@ -1,5 +1,8 @@
-package Sources;
+package Java.Model;
 
+/**
+ * Classe ayant servi de premier modèle
+ */
 public class SimpleGame extends Game{
 
     public SimpleGame(int tours_max){
@@ -15,7 +18,7 @@ public class SimpleGame extends Game{
     }
 
     protected void gameOver() {
-        System.out.println("Sources.Game Over");
+        System.out.println("Java.Model.Game Over");
     }
 
     public void pause() {

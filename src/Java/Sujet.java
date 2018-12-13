@@ -1,6 +1,6 @@
-package Sources;
+package Java;
 
-import Sources.View.Observateur;
+import Java.View.Observateur;
 
 public interface Sujet {
     public void enregistrerObservateur(Observateur observateur);

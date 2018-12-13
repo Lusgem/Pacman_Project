@@ -1,4 +1,4 @@
-package Sources.Controleur;
+package Java.Controleur;
 
 public interface ControleurGame {
     void restart();

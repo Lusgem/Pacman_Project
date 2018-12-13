@@ -1,9 +1,13 @@
-package Sources.View;
+package Java.View;
 
-import Sources.*;
-import Sources.Controleur.ControleurGame;
-import Sources.Controleur.ControleurSimpleGame;
-import Sources.Etat.EtatVulnerable;
+import Java.*;
+import Java.Controleur.ControleurGame;
+import Java.Controleur.ControleurSimpleGame;
+import Java.Etat.EtatVulnerable;
+import Java.Model.Game;
+import Java.Model.PacmanGame;
+import Java.Model.SimpleGame;
+import Java.Strategie.StrategieJoueur1;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +22,7 @@ public class ViewGame extends JFrame implements Observateur {
     Maze maze;
     ArrayList<PositionAgent> posFantomes= new ArrayList<>();
     ArrayList<PositionAgent> posPacman= new ArrayList<>();
+    public static StrategieJoueur1 strategieJoueur1=new StrategieJoueur1();
 
     {
         try {
@@ -33,7 +38,7 @@ public class ViewGame extends JFrame implements Observateur {
         this.game = game;
         maze = null;
 
-
+        addKeyListener(strategieJoueur1);
         if(game instanceof SimpleGame){
             try {
                 maze = new Maze("./src/layouts/bigCorners.lay");
@@ -89,7 +94,7 @@ public class ViewGame extends JFrame implements Observateur {
                 posPacman.add(a.getPositionCourante());
             }
             pacmanPanel.setPacmans_pos(posPacman);
-            if(((PacmanGame) game).getFantomesAgents().get(0).getEtat() instanceof EtatVulnerable){
+            if(!((PacmanGame) game).getFantomesAgents().isEmpty() && ((PacmanGame) game).getFantomesAgents().get(0).getEtat() instanceof EtatVulnerable){
                 pacmanPanel.setGhostsScarred(true);
             }
             else

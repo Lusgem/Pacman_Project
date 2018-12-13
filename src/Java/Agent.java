@@ -1,8 +1,10 @@
-package Sources;
+package Java;
 
-import Sources.Etat.Etat;
-import Sources.Strategie.Strategie;
-import Sources.Strategie.StrategieRandom;
+import Java.Etat.Etat;
+import Java.Etat.EtatInvulnerable;
+import Java.Etat.EtatVulnerable;
+import Java.Strategie.Strategie;
+import Java.Strategie.StrategieRandom;
 
 public class Agent {
 
@@ -11,12 +13,14 @@ public class Agent {
     private PositionAgent positionInitiale;
     private Etat etat;
     private Strategie strategie = new StrategieRandom();
+    private boolean controlable = false;
 
 
-    public Agent(TypeAgent typeAgent, PositionAgent positionCourante) {
+    public Agent(TypeAgent typeAgent, PositionAgent positionCourante, Etat etat) {
         this.typeAgent = typeAgent;
         this.positionInitiale = positionCourante;
         this.positionCourante = positionCourante;
+        this.etat = etat;
     }
 
 
@@ -54,5 +58,29 @@ public class Agent {
 
     public PositionAgent getPositionInitiale() {
         return positionInitiale;
+    }
+
+    public void setVulnerable(){
+        setEtat(new EtatVulnerable());
+    }
+
+    public void setInvulnerable(){
+        setEtat(new EtatInvulnerable());
+    }
+
+    public boolean isVulnerable(){
+        return etat instanceof EtatVulnerable;
+    }
+
+    public boolean isInvulnerable(){
+        return etat instanceof EtatInvulnerable;
+    }
+
+    public boolean isControlable() {
+        return controlable;
+    }
+
+    public void setControlable(boolean controlable) {
+        this.controlable = controlable;
     }
 }

@@ -1,8 +1,8 @@
-package Sources.Strategie;
+package Java.Strategie;
 
-import Sources.Agent;
-import Sources.AgentAction;
-import Sources.Maze;
+import Java.Agent;
+import Java.AgentAction;
+import Java.Maze;
 
 public class StrategieRandom implements Strategie {
 

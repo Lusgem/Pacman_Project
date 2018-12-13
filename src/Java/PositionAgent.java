@@ -1,4 +1,4 @@
-package Sources;
+package Java;
 
 public class PositionAgent {
 	

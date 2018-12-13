@@ -1,8 +1,9 @@
-package Sources;
+package Java;
 
-import Sources.Controleur.ControleurPacmanGame;
-import Sources.View.ViewCommande;
-import Sources.View.ViewGame;
+import Java.Controleur.ControleurPacmanGame;
+import Java.Model.PacmanGame;
+import Java.View.ViewCommande;
+import Java.View.ViewGame;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;

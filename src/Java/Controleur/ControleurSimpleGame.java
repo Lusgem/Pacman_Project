@@ -1,12 +1,12 @@
-package Sources.Controleur;
+package Java.Controleur;
 
-import Sources.Game;
+import Java.Model.Game;
 
-public class ControleurPacmanGame implements ControleurGame {
-
+public class ControleurSimpleGame implements ControleurGame{
     private Game game;
 
-    public ControleurPacmanGame(Game game) {
+
+    public ControleurSimpleGame(Game game) {
         this.game = game;
     }
 

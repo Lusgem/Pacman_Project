@@ -1,6 +1,7 @@
-package Sources;
+package Java.Model;
 
-import Sources.View.Observateur;
+import Java.Sujet;
+import Java.View.Observateur;
 
 import java.util.ArrayList;
 

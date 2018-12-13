@@ -1,4 +1,4 @@
-package Sources;
+package Java;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -95,7 +95,7 @@ public class Maze implements Serializable{
 			for(int x=0;x<size_x;x++) if (!walls[x][size_y-1]) throw new Exception("Wrong input format: the maze must be closed");
 			for(y=0;y<size_y;y++) if (!walls[0][y]) throw new Exception("Wrong input format: the maze must be closed");
 			for(y=0;y<size_y;y++) if (!walls[size_x-1][y]) throw new Exception("Wrong input format: the maze must be closed");
-			System.out.println("### Sources.Maze loaded.");
+			System.out.println("### Java.Maze loaded.");
 			
 		}		
 		catch (Exception e){

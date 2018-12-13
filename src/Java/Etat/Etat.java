@@ -1,4 +1,4 @@
-package Sources.Etat;
+package Java.Etat;
 
 public interface Etat {
 }

@@ -1,8 +1,9 @@
-package Sources;
+package Java;
 
-import Sources.Controleur.ControleurSimpleGame;
-import Sources.View.ViewCommande;
-import Sources.View.ViewGame;
+import Java.Controleur.ControleurSimpleGame;
+import Java.Model.SimpleGame;
+import Java.View.ViewCommande;
+import Java.View.ViewGame;
 
 public class TestSimple {
 
