@@ -1,3 +1,8 @@
+package Sources;
+
+import Sources.Etat.EtatInvulnerable;
+import Sources.Etat.EtatVulnerable;
+
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.io.File;
@@ -103,7 +108,7 @@ public class PacmanGame extends Game {
 
     @Override
     protected void gameOver() {
-        System.out.println("Game Over");
+        System.out.println("Sources.Game Over");
         stopMusic();
         init();
     }
@@ -119,10 +124,9 @@ public class PacmanGame extends Game {
     public boolean moveAgent(Agent agent, AgentAction action){
         if(isLegalMove(agent,action)){
             PositionAgent newPos = new PositionAgent(agent.getPositionCourante().getX()+action.getVx(),agent.getPositionCourante().getY()+action.getVy(),action.getDirection());
-            if(agent.getType() == Type.PACMAN) {
+            if(agent.getTypeAgent() == TypeAgent.PACMAN) {
 
                 agent.setPositionCourante(newPos);
-
 
                 if(maze.isFood(newPos.getX(),newPos.getY())){
                     maze.setFood(newPos.getX(),newPos.getY(),false);
@@ -191,7 +195,7 @@ public class PacmanGame extends Game {
     }
 
     /**
-     * Fonction servant à stopper toutes les musiques lors de l'arret du jeu (Game over ou victoire)
+     * Fonction servant à stopper toutes les musiques lors de l'arret du jeu (Sources.Game over ou victoire)
      */
     public void stopMusic(){
         for(AudioClip audioClip : listMusic){

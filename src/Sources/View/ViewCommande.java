@@ -1,16 +1,15 @@
-import sun.applet.AppletAudioClip;
+package Sources.View;
+
+import Sources.Controleur.ControleurGame;
+import Sources.Game;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class ViewCommande extends JFrame implements Observateur {
 
@@ -30,9 +29,6 @@ public class ViewCommande extends JFrame implements Observateur {
     JButton choixRun = new JButton(icon_run);
     JButton choixStep = new JButton(icon_step);
     JButton choixPause = new JButton(icon_pause);
-    AudioClip mainTheme;
-
-
 
 
 

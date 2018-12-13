@@ -1,3 +1,9 @@
+package Sources;
+
+import Sources.Controleur.ControleurSimpleGame;
+import Sources.View.ViewCommande;
+import Sources.View.ViewGame;
+
 public class TestSimple {
 
     /**

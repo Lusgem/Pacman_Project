@@ -1,4 +1,8 @@
-import java.util.ArrayList;
+package Sources.Strategie;
+
+import Sources.Agent;
+import Sources.AgentAction;
+import Sources.Maze;
 
 public class StrategieBrute implements Strategie{
     @Override

@@ -1,3 +1,4 @@
+package Sources;
 
 public class SimpleGame extends Game{
 
@@ -14,7 +15,7 @@ public class SimpleGame extends Game{
     }
 
     protected void gameOver() {
-        System.out.println("Game Over");
+        System.out.println("Sources.Game Over");
     }
 
     public void pause() {
