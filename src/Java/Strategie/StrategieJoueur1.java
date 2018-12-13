@@ -10,6 +10,25 @@ import java.awt.event.KeyListener;
 public class StrategieJoueur1 implements Strategie, KeyListener {
 
     AgentAction action = new AgentAction(Maze.WEST);
+    private static StrategieJoueur1 strategieJoueur1 = new StrategieJoueur1();
+
+    private StrategieJoueur1(){
+        super();
+    }
+
+    public static StrategieJoueur1 getInstance() {
+        if (strategieJoueur1 == null) {
+            // Le mot-clé synchronized sur ce bloc empêche toute instanciation
+            // multiple même par différents "threads".
+            // Il est TRES important.
+            synchronized (StrategieJoueur1.class) {
+                if (strategieJoueur1 == null) {
+                    StrategieJoueur1 strategieJoueur1 = new StrategieJoueur1();
+                }
+            }
+        }
+        return strategieJoueur1;
+    }
 
     @Override
     public AgentAction jouer(Agent a, Maze maze) {

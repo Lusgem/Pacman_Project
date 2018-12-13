@@ -51,7 +51,7 @@ public class PacmanGame extends Game {
             fantomesAgents.add(FabriqueAgents.fabriqueFantome(pos));
         }
         pacmanAgents.get(0).setControlable(true);
-        pacmanAgents.get(0).setStrategie(ViewGame.strategieJoueur1);
+        pacmanAgents.get(0).setStrategie(StrategieJoueur1.getInstance());
 
         mainTheme = initMusic("src/Music/pacman_beginning.wav");
         eatFood = initMusic("src/Music/pacman_chomp.wav");
@@ -82,6 +82,9 @@ public class PacmanGame extends Game {
 
     @Override
     protected void takeTurn() {
+        if(pacmanAgents.isEmpty()){
+            gameOver();
+        }
         if(!fantomesAgents.isEmpty() && fantomesAgents.get(0).isVulnerable()){
             compteurVunerable++;
             if(compteurVunerable>=vunerableTime){
@@ -95,8 +98,6 @@ public class PacmanGame extends Game {
                 }
             }
         }
-
-
         for (Agent a : fantomesAgents){
 
             while(true) {
@@ -120,9 +121,10 @@ public class PacmanGame extends Game {
 
     @Override
     protected void gameOver() {
-        System.out.println("Java.Model.Game Over");
         stopMusic();
         init();
+        stop();
+        over=true;
     }
 
     public Maze getMaze() {
@@ -176,8 +178,10 @@ public class PacmanGame extends Game {
             }
             else {
                 for(Agent pacman : pacmanAgents){
-                    if(pacman.getPositionCourante().equals(agent.getPositionCourante())){
+                    if(pacman.getPositionCourante().getY()==newPos.getY() && pacman.getPositionCourante().getX()==newPos.getX()){
+                        System.out.println("TRUE");
                         pacmanAgents.remove(pacman);
+                        break;
                     }
                 }
                 agent.setPositionCourante(newPos);

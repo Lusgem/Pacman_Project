@@ -43,9 +43,6 @@ public class ViewCommande extends JFrame implements Observateur {
         int dy = centerPoint.y ;
         setLocation(dx, dy);
 
-
-
-
         game.enregistrerObservateur(this);
         this.game = game;
         this.controleurGame = controleurGame;

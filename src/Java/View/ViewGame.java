@@ -7,6 +7,7 @@ import Java.Etat.EtatVulnerable;
 import Java.Model.Game;
 import Java.Model.PacmanGame;
 import Java.Model.SimpleGame;
+import Java.Strategie.Strategie;
 import Java.Strategie.StrategieJoueur1;
 
 import javax.swing.*;
@@ -22,7 +23,7 @@ public class ViewGame extends JFrame implements Observateur {
     Maze maze;
     ArrayList<PositionAgent> posFantomes= new ArrayList<>();
     ArrayList<PositionAgent> posPacman= new ArrayList<>();
-    public static StrategieJoueur1 strategieJoueur1=new StrategieJoueur1();
+    public StrategieJoueur1 strategieJoueur1 = StrategieJoueur1.getInstance();
 
     {
         try {
