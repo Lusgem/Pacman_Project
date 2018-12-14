@@ -44,7 +44,7 @@ public class TestPacmanComplet {
             return;
         }
 
-        PacmanGame game = new PacmanGame(200,maze);
+        PacmanGame game = new PacmanGame(500,maze);
         ControleurPacmanGame controleurPacmanGame = new ControleurPacmanGame(game);
 
 

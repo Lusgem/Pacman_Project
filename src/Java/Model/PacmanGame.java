@@ -37,6 +37,9 @@ public class PacmanGame extends Game {
     private int compteurVunerable;
     private final int vunerableTime=20;
 
+    private boolean gagnant = false;
+    private int food=0;
+
 
 
 
@@ -50,8 +53,11 @@ public class PacmanGame extends Game {
         for (PositionAgent pos : maze.getGhosts_start()){
             fantomesAgents.add(FabriqueAgents.fabriqueFantome(pos));
         }
-        pacmanAgents.get(0).setControlable(true);
-        pacmanAgents.get(0).setStrategie(StrategieJoueur1.getInstance());
+        //On rend le premier pacman controlable et on lui assigne une stratégiejoueur1
+        if(!pacmanAgents.isEmpty()){
+            pacmanAgents.get(0).setControlable(true);
+            pacmanAgents.get(0).setStrategie(StrategieJoueur1.getInstance());
+        }
 
         mainTheme = initMusic("src/Music/pacman_beginning.wav");
         eatFood = initMusic("src/Music/pacman_chomp.wav");
@@ -82,7 +88,10 @@ public class PacmanGame extends Game {
 
     @Override
     protected void takeTurn() {
-        if(pacmanAgents.isEmpty()){
+        if(finDuJeu()){
+            if(!gagnant){
+                deathOfPacman.play();
+            }
             gameOver();
         }
         if(!fantomesAgents.isEmpty() && fantomesAgents.get(0).isVulnerable()){
@@ -152,6 +161,7 @@ public class PacmanGame extends Game {
             return false;
         }
         else if(!isLegalMove(agent,action) && agent.isControlable()){
+            //Permet à un agent controlable de rester immobile si la direction qu'il a choisi n'est pas possible
             return true;
         }
 
@@ -161,6 +171,7 @@ public class PacmanGame extends Game {
                 agent.setPositionCourante(newPos);
                 if(maze.isFood(newPos.getX(),newPos.getY())){
                     maze.setFood(newPos.getX(),newPos.getY(),false);
+                    food++;
                     eatFood.play();
                 }
                 else if(maze.isCapsule(newPos.getX(),newPos.getY())){
@@ -179,8 +190,8 @@ public class PacmanGame extends Game {
             else {
                 for(Agent pacman : pacmanAgents){
                     if(pacman.getPositionCourante().getY()==newPos.getY() && pacman.getPositionCourante().getX()==newPos.getX()){
-                        System.out.println("TRUE");
                         pacmanAgents.remove(pacman);
+                        deathOfPacman.play();
                         break;
                     }
                 }
@@ -242,6 +253,30 @@ public class PacmanGame extends Game {
         for(AudioClip audioClip : listMusic){
             audioClip.stop();
         }
+    }
+
+    /**
+     * Conditions de fin de jeu
+     * Le jeu s'arrete si :
+     * Il n'y a plus de pacman
+     * Si le pacman a mangé toute la nourriture
+     * Si il n'y avait pas de nourriture, si tous les fantomes sont morts
+     *
+     * @return
+     */
+    public boolean finDuJeu(){
+
+        if(pacmanAgents.isEmpty()){
+            return true;
+        }
+        else if(maze.getInitialfood()!=0 && maze.getInitialfood()==food) {
+            gagnant=true;
+            return true;
+        }else if(maze.getInitialfood()==0 && fantomesAgents.isEmpty()){
+            gagnant=true;
+            return true;
+        }
+        return false;
     }
 
 

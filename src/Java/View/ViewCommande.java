@@ -122,7 +122,7 @@ public class ViewCommande extends JFrame implements Observateur {
 
     @Override
     public void actualiser() {
-        turnInfo.setText("Tour : "+game.getCompteur());
+        turnInfo.setText("Temps restant : "+(game.getTours_max()-game.getCompteur()));
         if(game.isOver()){
             choixRun.setEnabled(false);
             choixRestart.setEnabled(true);

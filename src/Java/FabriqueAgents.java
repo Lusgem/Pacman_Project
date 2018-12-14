@@ -2,6 +2,7 @@ package Java;
 
 import Java.Etat.EtatInvulnerable;
 import Java.Etat.EtatVulnerable;
+import Java.Strategie.StrategieJoueur1;
 
 /**
  * Fabrique pour créer différents types d'agents à partir d'une position
@@ -18,5 +19,6 @@ public class FabriqueAgents {
         Agent fantome = new Agent(TypeAgent.FANTOME,positionAgent,new EtatInvulnerable());
         return fantome;
     }
+
 
 }

@@ -65,7 +65,7 @@ public class ViewGame extends JFrame implements Observateur {
         setLocation(dx, dy);
 
         panelGlobal = new JPanel(new GridLayout(2,1));
-        labelTours.setText("Tour : 0");
+        labelTours.setText("Temps restant : "+(game.getTours_max()-game.getCompteur()));
         //labelTours.setPreferredSize(new Dimension(100,100));
         panelGlobal.add(labelTours,CENTER_ALIGNMENT);
         //panelGlobal.setSize(100,500);
@@ -83,7 +83,7 @@ public class ViewGame extends JFrame implements Observateur {
 
     @Override
     public void actualiser() {
-        labelTours.setText("Tour : "+game.getCompteur());
+        labelTours.setText("Temps restant: "+(game.getTours_max()-game.getCompteur()));
         posFantomes.clear();
         posPacman.clear();
         if (game instanceof PacmanGame){

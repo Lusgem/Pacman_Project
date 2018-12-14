@@ -28,6 +28,7 @@ public class Maze implements Serializable{
 	private boolean walls[][];
 	private boolean food[][];
 	private boolean capsules[][];
+	private int initialfood=0;
 
 	/** 
 	 * Les positions initiales des agents
@@ -79,7 +80,10 @@ public class Maze implements Serializable{
 				for(int x=0;x<ligne.length();x++)
 				{
 					if (ligne.charAt(x)=='%') walls[x][y]=true; else walls[x][y]=false;
-					if (ligne.charAt(x)=='.') food[x][y]=true; else food[x][y]=false;
+					if (ligne.charAt(x)=='.'){
+					    food[x][y]=true;
+					    initialfood++;
+                    } else food[x][y]=false;
 					if (ligne.charAt(x)=='o') capsules[x][y]=true; else capsules[x][y]=false;
 					if (ligne.charAt(x)=='P') {pacman_start.add(new PositionAgent(x,y,Maze.NORTH));}
 					if (ligne.charAt(x)=='G') {ghosts_start.add(new PositionAgent(x,y,Maze.NORTH));}
@@ -187,8 +191,14 @@ public class Maze implements Serializable{
 	public void setGhosts_start(ArrayList<PositionAgent> ghosts_start) {
 		this.ghosts_start = ghosts_start;
 	}
-	
-	
+
+    /**
+     * Renvoi le nombre de nourriture présents dans le labyrinthe au début du jeu
+     * @return
+     */
+    public int getInitialfood() {
+        return initialfood;
+    }
 }
 
 

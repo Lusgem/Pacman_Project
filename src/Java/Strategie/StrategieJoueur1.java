@@ -7,6 +7,11 @@ import Java.Maze;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * Cette classe représente la stratégie du joueur1
+ * Elle est aussi une classe Singleton car elle ne doit pas être dupliquée (à cause du Key Listener)
+ * Elle permet de gérer les actions du joueur au clavier
+ */
 public class StrategieJoueur1 implements Strategie, KeyListener {
 
     AgentAction action = new AgentAction(Maze.WEST);
@@ -18,12 +23,9 @@ public class StrategieJoueur1 implements Strategie, KeyListener {
 
     public static StrategieJoueur1 getInstance() {
         if (strategieJoueur1 == null) {
-            // Le mot-clé synchronized sur ce bloc empêche toute instanciation
-            // multiple même par différents "threads".
-            // Il est TRES important.
             synchronized (StrategieJoueur1.class) {
                 if (strategieJoueur1 == null) {
-                    StrategieJoueur1 strategieJoueur1 = new StrategieJoueur1();
+                    strategieJoueur1 = new StrategieJoueur1();
                 }
             }
         }
@@ -32,7 +34,6 @@ public class StrategieJoueur1 implements Strategie, KeyListener {
 
     @Override
     public AgentAction jouer(Agent a, Maze maze) {
-        System.out.println(action.getDirection());
         return action;
     }
 
@@ -45,11 +46,9 @@ public class StrategieJoueur1 implements Strategie, KeyListener {
         int code = keyEvent.getKeyCode();
         switch(code) {
             case KeyEvent.VK_LEFT:
-                System.out.println("left");
                 action = new AgentAction(Maze.WEST);
                 break;
             case KeyEvent.VK_UP:
-                System.out.println("up");
                 action = new AgentAction(Maze.NORTH);
                 break;
             case KeyEvent.VK_DOWN:

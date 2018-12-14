@@ -104,4 +104,8 @@ public abstract class Game implements Runnable, Sujet {
     public void setTime(long time) {
         this.time = time;
     }
+
+    public int getTours_max() {
+        return tours_max;
+    }
 }
