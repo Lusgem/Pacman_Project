@@ -39,6 +39,8 @@ public class PacmanGame extends Game {
 
     private boolean gagnant = false;
     private int food=0;
+    private int score=0;
+    private int vies;
 
 
 
@@ -46,19 +48,7 @@ public class PacmanGame extends Game {
     public PacmanGame(int tours_max, Maze maze) {
         super(tours_max);
         this.maze=maze;
-
-        for(PositionAgent pos : maze.getPacman_start()){
-            pacmanAgents.add(FabriqueAgents.fabriquePacman(pos));
-        }
-        for (PositionAgent pos : maze.getGhosts_start()){
-            fantomesAgents.add(FabriqueAgents.fabriqueFantome(pos));
-        }
-        //On rend le premier pacman controlable et on lui assigne une stratégiejoueur1
-        if(!pacmanAgents.isEmpty()){
-            pacmanAgents.get(0).setControlable(true);
-            pacmanAgents.get(0).setStrategie(StrategieJoueur1.getInstance());
-        }
-
+        start();
         mainTheme = initMusic("src/Music/pacman_beginning.wav");
         eatFood = initMusic("src/Music/pacman_chomp.wav");
         ghostVulnerable = initMusic("src/Music/pacman_intermission.wav");
@@ -75,14 +65,7 @@ public class PacmanGame extends Game {
     protected void initializegame() {
         pacmanAgents.clear();
         fantomesAgents.clear();
-
-        for(PositionAgent pos : maze.getPacman_start()){
-            pacmanAgents.add(FabriqueAgents.fabriquePacman(pos));
-        }
-
-        for (PositionAgent pos : maze.getGhosts_start()){
-            fantomesAgents.add(FabriqueAgents.fabriqueFantome(pos));
-        }
+        start();
         notifierObservateur();
     }
 
@@ -152,11 +135,13 @@ public class PacmanGame extends Game {
 
     /**
      * Met à jour la position d'un agent si elle est atteignable
+     * Si la position n'est pas atteignable mais que l'agent est controlable, ne fait rien
      * @param agent
      * @param action
      * @return
      */
     public boolean moveAgent(Agent agent, AgentAction action){
+        //Si le mouvement n'est pas possible et l'agent n'est pas controlable, le mouvement est refusé
         if(!isLegalMove(agent,action) && !agent.isControlable()){
             return false;
         }
@@ -164,20 +149,24 @@ public class PacmanGame extends Game {
             //Permet à un agent controlable de rester immobile si la direction qu'il a choisi n'est pas possible
             return true;
         }
-
         if(isLegalMove(agent,action)){
             PositionAgent newPos = new PositionAgent(agent.getPositionCourante().getX()+action.getVx(),agent.getPositionCourante().getY()+action.getVy(),action.getDirection());
             if(agent.getTypeAgent() == TypeAgent.PACMAN) {
+                if(agent.isInvulnerable()){
+                    death(agent,newPos,agent.getPositionCourante());
+                }
                 agent.setPositionCourante(newPos);
                 if(maze.isFood(newPos.getX(),newPos.getY())){
                     maze.setFood(newPos.getX(),newPos.getY(),false);
                     food++;
                     eatFood.play();
+                    score+=10;
                 }
                 else if(maze.isCapsule(newPos.getX(),newPos.getY())){
                     maze.setCapsule(newPos.getX(),newPos.getY(),false);
                     compteurVunerable=0;
                     ghostVulnerable.loop();
+                    score+=100;
                     for(Agent a : fantomesAgents){
                         a.setVulnerable();
                     }
@@ -188,13 +177,8 @@ public class PacmanGame extends Game {
 
             }
             else {
-                for(Agent pacman : pacmanAgents){
-                    if(pacman.getPositionCourante().getY()==newPos.getY() && pacman.getPositionCourante().getX()==newPos.getX()){
-                        pacmanAgents.remove(pacman);
-                        deathOfPacman.play();
-                        break;
-                    }
-                }
+                if(agent.isInvulnerable())
+                    death(agent,newPos,agent.getPositionCourante());
                 agent.setPositionCourante(newPos);
             }
             notifierObservateur();
@@ -223,6 +207,14 @@ public class PacmanGame extends Game {
 
     public void setFantomesAgents(ArrayList<Agent> fantomesAgents) {
         this.fantomesAgents = fantomesAgents;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getVies() {
+        return vies;
     }
 
     /**
@@ -277,6 +269,69 @@ public class PacmanGame extends Game {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Fonction permettant de vérifier si un agent de type pacman ou fantome doit mourir à ce tour
+     * Si un fantome meurt, il est renvoyé à sa position de base
+     * Si pacman meurt, la musique concernée se lance et il est retiré de la liste des pacmans, si cette dernière est vide game over
+     * @param attaquant
+     * @param newPos
+     * @param oldPos
+     */
+    public void death(Agent attaquant,PositionAgent newPos, PositionAgent oldPos){
+        if(attaquant.getTypeAgent() == TypeAgent.PACMAN) {
+            for (Agent fantome : fantomesAgents) {
+                if ((fantome.getPositionCourante().getY() == newPos.getY() && fantome.getPositionCourante().getX() == newPos.getX()) || (fantome.getPositionCourante().getX() == oldPos.getX() && fantome.getPositionCourante().getY() == oldPos.getY())) {
+                    fantomesAgents.get(fantomesAgents.indexOf(fantome)).setPositionCourante(fantome.getPositionInitiale());
+                    break;
+                }
+            }
+        }
+        else {
+            for(Agent pacman : pacmanAgents){
+                if((pacman.getPositionCourante().getY() == newPos.getY() && pacman.getPositionCourante().getX() == newPos.getX()) || (pacman.getPositionCourante().getX() == oldPos.getX() && pacman.getPositionCourante().getY() == oldPos.getY())){
+                    if(vies<=0){
+                        pacmanAgents.remove(pacman);
+                    }
+                    else{
+                        pacman.setPositionCourante(pacman.getPositionInitiale());
+                        vies--;
+                    }
+                    deathOfPacman.play();
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Cette fonction sert à initialiser les positions et startégies des différents agents (sert à la création de la classe et lors d'une nouvelle partie
+     *
+     */
+    public void start(){
+        score=0;
+        vies=3;
+        if(!maze.getPacman_start().isEmpty()){
+            for(int i=0;i<maze.getPacman_start().size();i++){
+                PositionAgent pos = maze.getPacman_start().get(0);
+                if(i==0){
+                    pacmanAgents.add(FabriqueAgents.fabriqueJoueur1(pos));
+                    vies=3;
+                }
+                else {
+                    pacmanAgents.add(FabriqueAgents.fabriquePacman(pos));
+                }
+            }
+        }
+        for (PositionAgent pos : maze.getGhosts_start()){
+            fantomesAgents.add(FabriqueAgents.fabriqueFantome(pos));
+        }
+        //On rend le premier pacman controlable et on lui assigne une stratégiejoueur1
+        if(!pacmanAgents.isEmpty()){
+            pacmanAgents.get(0).setControlable(true);
+            pacmanAgents.get(0).setStrategie(StrategieJoueur1.getInstance());
+        }
     }
 
 

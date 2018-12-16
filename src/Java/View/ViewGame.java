@@ -17,8 +17,10 @@ import java.util.ArrayList;
 public class ViewGame extends JFrame implements Observateur {
     private Game game;
     private ControleurGame controleurGame;
-    private JPanel panelGlobal;
-    private JLabel labelTours=new JLabel();
+    private JPanel panelScore;
+    private JLabel labelTours = new JLabel();
+    private JLabel labelScore = new JLabel();
+    private JLabel labelVies = new JLabel();
     private PanelPacmanGame pacmanPanel;
     Maze maze;
     ArrayList<PositionAgent> posFantomes= new ArrayList<>();
@@ -64,15 +66,21 @@ public class ViewGame extends JFrame implements Observateur {
         int dy = centerPoint.y - windowSize.height;
         setLocation(dx, dy);
 
-        panelGlobal = new JPanel(new GridLayout(2,1));
+
+        panelScore = new JPanel(new GridLayout(1,3));
         labelTours.setText("Temps restant : "+(game.getTours_max()-game.getCompteur()));
-        //labelTours.setPreferredSize(new Dimension(100,100));
-        panelGlobal.add(labelTours,CENTER_ALIGNMENT);
-        //panelGlobal.setSize(100,500);
+        panelScore.add(labelTours);
+        if(game instanceof PacmanGame){
+            labelScore.setText("Score : "+((PacmanGame) game).getScore());
+            labelVies.setText("Vies restantes : "+((PacmanGame) game).getVies());
+            panelScore.add(labelScore);
+            panelScore.add(labelVies);
+        }
+
         pacmanPanel= new PanelPacmanGame(maze);
 
         try {
-            add(panelGlobal,BorderLayout.NORTH);
+            add(panelScore,BorderLayout.NORTH);
             add(pacmanPanel,BorderLayout.CENTER);
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,6 +95,8 @@ public class ViewGame extends JFrame implements Observateur {
         posFantomes.clear();
         posPacman.clear();
         if (game instanceof PacmanGame){
+            labelScore.setText("Score : "+((PacmanGame) game).getScore());
+            labelVies.setText("Vies restantes : "+((PacmanGame) game).getVies());
             for(Agent a : ((PacmanGame)game).getFantomesAgents()){
                 posFantomes.add(a.getPositionCourante());
             }

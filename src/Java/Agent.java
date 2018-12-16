@@ -15,6 +15,8 @@ public class Agent {
     private Strategie strategie = new StrategieRandom();
     private boolean controlable = false;
 
+    private int nbVie=0;
+
 
     public Agent(TypeAgent typeAgent, PositionAgent positionCourante, Etat etat) {
         this.typeAgent = typeAgent;
@@ -83,4 +85,9 @@ public class Agent {
     public void setControlable(boolean controlable) {
         this.controlable = controlable;
     }
+
+    public void setPositionInitiale(PositionAgent positionInitiale) {
+        this.positionInitiale = positionInitiale;
+    }
+
 }

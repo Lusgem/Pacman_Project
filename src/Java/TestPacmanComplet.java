@@ -13,6 +13,10 @@ import java.io.File;
 
 public class TestPacmanComplet {
 
+    /**
+     * Classe de test du jeu pacman, permet de sélectionner le labyrinthe dans le dossier layout (restreint aux fichiers .lay)
+     * @param args
+     */
     public static void main(String[] args) {
 
         FileSystemView vueSysteme = FileSystemView.getFileSystemView();
@@ -33,8 +37,6 @@ public class TestPacmanComplet {
         layoutChooser.setAcceptAllFileFilterUsed(false);
         layoutChooser.showOpenDialog(null);
         filename = layoutChooser.getSelectedFile().getPath();
-
-
 
 
         Maze maze;

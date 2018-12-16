@@ -20,5 +20,10 @@ public class FabriqueAgents {
         return fantome;
     }
 
+    public static Agent fabriqueJoueur1(PositionAgent positionAgent){
+        Agent pacman = new Agent(TypeAgent.PACMAN,positionAgent, new EtatVulnerable());
+        pacman.setStrategie(StrategieJoueur1.getInstance());
+        return pacman;
+    }
 
 }
