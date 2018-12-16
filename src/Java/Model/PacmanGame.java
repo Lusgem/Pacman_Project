@@ -103,10 +103,15 @@ public class PacmanGame extends Game {
         }
         for (Agent a : fantomesAgents) {
             moveAgent(a, a.getStrategie().jouer(a, maze, pacmanAgents));
-
+            if(finDuJeu()){
+                break;
+            }
         }
         for (Agent a : pacmanAgents) {
             moveAgent(a, a.getStrategie().jouer(a, maze, fantomesAgents));
+            if(finDuJeu()){
+                break;
+            }
         }
     }
         notifierObservateur();
