@@ -15,6 +15,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Vue principale du jeu, contient la labirynthe, le score, le temps restant (en fait ce sont les périodes restantes) et le nb de vies restants au pacman
+ */
 public class ViewGame extends JFrame implements Observateur {
     private Game game;
     private ControleurGame controleurGame;
@@ -29,13 +32,6 @@ public class ViewGame extends JFrame implements Observateur {
     private StrategieJoueur1 strategieJoueur1 = StrategieJoueur1.getInstance();
     private StrategieJoueur2 strategieJoueur2 = StrategieJoueur2.getInstance();
 
-    {
-        try {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public ViewGame(Game game){
 
@@ -92,6 +88,9 @@ public class ViewGame extends JFrame implements Observateur {
         setVisible(true);
     }
 
+    /**
+     * Mets à jour la vue (score, temps, vies restantes et positions des différents agents
+     */
     @Override
     public void actualiser() {
         labelTours.setText("Temps restant: "+(game.getTours_max()-game.getCompteur()));

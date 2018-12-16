@@ -33,6 +33,7 @@ public class FabriqueAgents {
     public static Agent fabriqueFantomeBrute(PositionAgent positionAgent){
         Agent fantome = new Agent(TypeAgent.FANTOME,positionAgent,new EtatInvulnerable());
         fantome.setStrategie(new StrategieBruteRapprochement());
+        fantome.setControlable(false);
         return fantome;
     }
 

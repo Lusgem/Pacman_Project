@@ -34,7 +34,7 @@ public class StrategieJoueur1 implements Strategie, KeyListener {
     }
 
     @Override
-    public AgentAction jouer(Agent a, Maze maze, ArrayList<Agent> ennemies, ArrayList<Agent> allies) {
+    public AgentAction jouer(Agent a, Maze maze, ArrayList<Agent> ennemies) {
         return action;
     }
 

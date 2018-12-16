@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class StrategieBruteRapprochement implements Strategie {
     @Override
-    public AgentAction jouer(Agent a, Maze maze, ArrayList<Agent> ennemies, ArrayList<Agent> allies) {
+    public AgentAction jouer(Agent a, Maze maze, ArrayList<Agent> ennemies) {
         PositionAgent pos = a.getPositionCourante();
         PositionAgent posEnnemie = ennemies.get(0).getPositionCourante();
         if((posEnnemie.getX() > pos.getX()) && (PacmanGame.isLegalMove(a,new AgentAction(Maze.EAST)))) {

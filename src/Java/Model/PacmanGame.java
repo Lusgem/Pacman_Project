@@ -4,7 +4,6 @@ import Java.*;
 import Java.Etat.EtatInactif;
 import Java.Strategie.StrategieBruteEloignement;
 import Java.Strategie.StrategieBruteRapprochement;
-import Java.Strategie.StrategieJoueur1;
 
 import java.applet.Applet;
 import java.applet.AudioClip;
@@ -21,6 +20,7 @@ public class PacmanGame extends Game {
     private static Maze maze;
     private ArrayList<Agent> pacmanAgents = new ArrayList<Agent>();
     private ArrayList<Agent> fantomesAgents = new ArrayList<Agent>();
+    private int nbJoueurs=1;
 
     private ArrayList<PositionItem> positionFood = new ArrayList<>();
     private ArrayList<PositionItem> positionCapsule = new ArrayList<>();
@@ -49,9 +49,10 @@ public class PacmanGame extends Game {
 
 
 
-    public PacmanGame(int tours_max, Maze maze) {
+    public PacmanGame(int tours_max, Maze maze,int nbJoueurs) {
         super(tours_max);
         this.maze=maze;
+        this.nbJoueurs=nbJoueurs;
         mainTheme = initMusic("src/Music/pacman_beginning.wav");
         eatFood = initMusic("src/Music/pacman_chomp.wav");
         ghostVulnerable = initMusic("src/Music/pacman_intermission.wav");
@@ -101,10 +102,11 @@ public class PacmanGame extends Game {
             }
         }
         for (Agent a : fantomesAgents) {
-            moveAgent(a, a.getStrategie().jouer(a, maze, pacmanAgents, fantomesAgents));
+            moveAgent(a, a.getStrategie().jouer(a, maze, pacmanAgents));
+
         }
         for (Agent a : pacmanAgents) {
-            moveAgent(a, a.getStrategie().jouer(a, maze, fantomesAgents, pacmanAgents));
+            moveAgent(a, a.getStrategie().jouer(a, maze, fantomesAgents));
         }
     }
         notifierObservateur();
@@ -220,6 +222,14 @@ public class PacmanGame extends Game {
 
     public int getVies() {
         return vies;
+    }
+
+    public int getNbJoueurs() {
+        return nbJoueurs;
+    }
+
+    public void setNbJoueurs(int nbJoueurs) {
+        this.nbJoueurs = nbJoueurs;
     }
 
     /**
@@ -344,7 +354,7 @@ public class PacmanGame extends Game {
 
         if(!maze.getPacman_start().isEmpty()){
             for(int i=0;i<maze.getPacman_start().size();i++){
-                PositionAgent pos = maze.getPacman_start().get(0);
+                PositionAgent pos = maze.getPacman_start().get(i);
                 if(i==0){
                     pacmanAgents.add(FabriqueAgents.fabriqueJoueur1(pos));
                     vies=3;
@@ -356,10 +366,11 @@ public class PacmanGame extends Game {
         }
         if(!maze.getGhosts_start().isEmpty()) {
             for (int i = 0; i < maze.getGhosts_start().size(); i++) {
-                PositionAgent pos = maze.getGhosts_start().get(0);
-                if (i == 0) {
+                PositionAgent pos = maze.getGhosts_start().get(i);
+                if (i == 0 && nbJoueurs==2) {
                     fantomesAgents.add(FabriqueAgents.fabriqueJoueur2(pos));
-                } else {
+                }
+                else {
                     fantomesAgents.add(FabriqueAgents.fabriqueFantomeBrute(pos));
                 }
             }

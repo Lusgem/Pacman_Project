@@ -12,7 +12,7 @@ public class StrategieRandom implements Strategie {
     int nombreAleatoire;
 
     @Override
-    public AgentAction jouer(Agent a, Maze maze, ArrayList<Agent> ennemies, ArrayList<Agent> allies) {
+    public AgentAction jouer(Agent a, Maze maze, ArrayList<Agent> ennemies) {
         nombreAleatoire = (int)(Math.random() * (4));
         while(PacmanGame.isLegalMove(a,new AgentAction(nombreAleatoire))) {
             switch (nombreAleatoire) {
