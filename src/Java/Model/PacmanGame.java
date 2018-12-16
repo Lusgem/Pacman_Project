@@ -354,10 +354,16 @@ public class PacmanGame extends Game {
                 }
             }
         }
-        for (PositionAgent pos : maze.getGhosts_start()){
-            fantomesAgents.add(FabriqueAgents.fabriqueFantomeBrute(pos));
+        if(!maze.getGhosts_start().isEmpty()) {
+            for (int i = 0; i < maze.getGhosts_start().size(); i++) {
+                PositionAgent pos = maze.getGhosts_start().get(0);
+                if (i == 0) {
+                    fantomesAgents.add(FabriqueAgents.fabriqueJoueur2(pos));
+                } else {
+                    fantomesAgents.add(FabriqueAgents.fabriqueFantomeBrute(pos));
+                }
+            }
         }
-
     }
 
 

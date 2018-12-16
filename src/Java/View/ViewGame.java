@@ -9,6 +9,7 @@ import Java.Model.PacmanGame;
 import Java.Model.SimpleGame;
 import Java.Strategie.Strategie;
 import Java.Strategie.StrategieJoueur1;
+import Java.Strategie.StrategieJoueur2;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +26,8 @@ public class ViewGame extends JFrame implements Observateur {
     Maze maze;
     ArrayList<PositionAgent> posFantomes= new ArrayList<>();
     ArrayList<PositionAgent> posPacman= new ArrayList<>();
-    public StrategieJoueur1 strategieJoueur1 = StrategieJoueur1.getInstance();
+    private StrategieJoueur1 strategieJoueur1 = StrategieJoueur1.getInstance();
+    private StrategieJoueur2 strategieJoueur2 = StrategieJoueur2.getInstance();
 
     {
         try {
@@ -42,6 +44,7 @@ public class ViewGame extends JFrame implements Observateur {
         maze = null;
 
         addKeyListener(strategieJoueur1);
+        addKeyListener(strategieJoueur2);
         if(game instanceof SimpleGame){
             try {
                 maze = new Maze("./src/layouts/bigCorners.lay");
