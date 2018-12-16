@@ -3,6 +3,7 @@ package Java;
 import Java.Etat.Etat;
 import Java.Etat.EtatInvulnerable;
 import Java.Etat.EtatVulnerable;
+import Java.Etat.EtatInactif;
 import Java.Strategie.Strategie;
 import Java.Strategie.StrategieRandom;
 
@@ -16,6 +17,7 @@ public class Agent {
     private boolean controlable = false;
 
     private int nbVie=0;
+
 
 
     public Agent(TypeAgent typeAgent, PositionAgent positionCourante, Etat etat) {
@@ -78,6 +80,14 @@ public class Agent {
         return etat instanceof EtatInvulnerable;
     }
 
+    public boolean isInactif(){
+        return etat instanceof EtatInactif;
+    }
+
+    public void setInactif(){
+        setEtat(new EtatInactif());
+    }
+
     public boolean isControlable() {
         return controlable;
     }
@@ -89,5 +99,6 @@ public class Agent {
     public void setPositionInitiale(PositionAgent positionInitiale) {
         this.positionInitiale = positionInitiale;
     }
+
 
 }

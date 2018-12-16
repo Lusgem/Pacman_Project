@@ -1,10 +1,8 @@
 package Java.Model;
 
 import Java.*;
-import Java.Etat.EtatInvulnerable;
-import Java.Etat.EtatVulnerable;
+import Java.Etat.EtatInactif;
 import Java.Strategie.StrategieJoueur1;
-import Java.View.ViewGame;
 
 import java.applet.Applet;
 import java.applet.AudioClip;
@@ -91,7 +89,6 @@ public class PacmanGame extends Game {
             }
         }
         for (Agent a : fantomesAgents){
-
             while(true) {
                 if (moveAgent(a, a.getStrategie().jouer(a, maze))) {
                 break;
@@ -111,6 +108,9 @@ public class PacmanGame extends Game {
 
     }
 
+    /**
+     * Arrete toutes les musiques, réinitialise les différents agents
+     */
     @Override
     protected void gameOver() {
         stopMusic();
@@ -149,6 +149,14 @@ public class PacmanGame extends Game {
             //Permet à un agent controlable de rester immobile si la direction qu'il a choisi n'est pas possible
             return true;
         }
+        else if(agent.isInactif()){
+            ((EtatInactif)agent.getEtat()).setWaitingTime(((EtatInactif)agent.getEtat()).getWaitingTime()-1);
+            if(((EtatInactif)agent.getEtat()).getWaitingTime()<=0) {
+                agent.setInvulnerable();
+            }
+            return true;
+        }
+
         if(isLegalMove(agent,action)){
             PositionAgent newPos = new PositionAgent(agent.getPositionCourante().getX()+action.getVx(),agent.getPositionCourante().getY()+action.getVy(),action.getDirection());
             if(agent.getTypeAgent() == TypeAgent.PACMAN) {
@@ -273,21 +281,31 @@ public class PacmanGame extends Game {
 
     /**
      * Fonction permettant de vérifier si un agent de type pacman ou fantome doit mourir à ce tour
-     * Si un fantome meurt, il est renvoyé à sa position de base
+     * Si un fantome meurt, il est renvoyé à sa position de base et attends pendant 5 périodes
      * Si pacman meurt, la musique concernée se lance et il est retiré de la liste des pacmans, si cette dernière est vide game over
      * @param attaquant
      * @param newPos
      * @param oldPos
      */
     public void death(Agent attaquant,PositionAgent newPos, PositionAgent oldPos){
-        if(attaquant.getTypeAgent() == TypeAgent.PACMAN) {
+        if(attaquant.getTypeAgent() == TypeAgent.PACMAN && attaquant.isInvulnerable()) {
             for (Agent fantome : fantomesAgents) {
                 if ((fantome.getPositionCourante().getY() == newPos.getY() && fantome.getPositionCourante().getX() == newPos.getX()) || (fantome.getPositionCourante().getX() == oldPos.getX() && fantome.getPositionCourante().getY() == oldPos.getY())) {
-                    fantomesAgents.get(fantomesAgents.indexOf(fantome)).setPositionCourante(fantome.getPositionInitiale());
-                    break;
+                    if(maze.getInitialfood()!=0) {
+                        fantome.setInactif();
+                        if(fantome.isInactif()){
+                            ((EtatInactif)fantome.getEtat()).setWaitingTime(5);
+                            System.out.println("INACTIF");
+                        }
+                        fantomesAgents.get(fantomesAgents.indexOf(fantome)).setPositionCourante(fantome.getPositionInitiale());
+                    }
+                    else {
+                        fantomesAgents.remove(fantome);
+                            break;
+                        }
+                    }
                 }
             }
-        }
         else {
             for(Agent pacman : pacmanAgents){
                 if((pacman.getPositionCourante().getY() == newPos.getY() && pacman.getPositionCourante().getX() == newPos.getX()) || (pacman.getPositionCourante().getX() == oldPos.getX() && pacman.getPositionCourante().getY() == oldPos.getY())){
