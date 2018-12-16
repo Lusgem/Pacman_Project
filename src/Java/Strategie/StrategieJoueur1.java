@@ -6,6 +6,7 @@ import Java.Maze;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 /**
  * Cette classe représente la stratégie du joueur1
@@ -33,7 +34,7 @@ public class StrategieJoueur1 implements Strategie, KeyListener {
     }
 
     @Override
-    public AgentAction jouer(Agent a, Maze maze) {
+    public AgentAction jouer(Agent a, Maze maze, ArrayList<Agent> ennemies, ArrayList<Agent> allies) {
         return action;
     }
 

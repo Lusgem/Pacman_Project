@@ -2,6 +2,8 @@ package Java.Model;
 
 import Java.*;
 import Java.Etat.EtatInactif;
+import Java.Strategie.StrategieBruteEloignement;
+import Java.Strategie.StrategieBruteRapprochement;
 import Java.Strategie.StrategieJoueur1;
 
 import java.applet.Applet;
@@ -16,9 +18,12 @@ import java.util.ArrayList;
  */
 public class PacmanGame extends Game {
 
-    private Maze maze;
+    private static Maze maze;
     private ArrayList<Agent> pacmanAgents = new ArrayList<Agent>();
     private ArrayList<Agent> fantomesAgents = new ArrayList<Agent>();
+
+    private ArrayList<PositionItem> positionFood = new ArrayList<>();
+    private ArrayList<PositionItem> positionCapsule = new ArrayList<>();
 
 
     // Fichiers musicaux pour les bruitages et la musique du jeu
@@ -28,6 +33,7 @@ public class PacmanGame extends Game {
     private AudioClip ghostVulnerable;
     private AudioClip deathOfPacman;
     private ArrayList<AudioClip> listMusic = new ArrayList<>();
+
 
 
 
@@ -46,7 +52,6 @@ public class PacmanGame extends Game {
     public PacmanGame(int tours_max, Maze maze) {
         super(tours_max);
         this.maze=maze;
-        start();
         mainTheme = initMusic("src/Music/pacman_beginning.wav");
         eatFood = initMusic("src/Music/pacman_chomp.wav");
         ghostVulnerable = initMusic("src/Music/pacman_intermission.wav");
@@ -55,8 +60,10 @@ public class PacmanGame extends Game {
         listMusic.add(ghostVulnerable);
         listMusic.add(eatFood);
         listMusic.add(deathOfPacman);
-
         mainTheme.play();
+        start();
+
+
     }
 
     @Override
@@ -69,43 +76,38 @@ public class PacmanGame extends Game {
 
     @Override
     protected void takeTurn() {
-        if(finDuJeu()){
-            if(!gagnant){
+        if (finDuJeu()) {
+            if (!gagnant) {
                 deathOfPacman.play();
             }
             gameOver();
         }
-        if(!fantomesAgents.isEmpty() && fantomesAgents.get(0).isVulnerable()){
+        else {
+        if (!fantomesAgents.isEmpty() && fantomesAgents.get(0).isVulnerable()) {
             compteurVunerable++;
-            if(compteurVunerable>=vunerableTime){
+            if (compteurVunerable >= vunerableTime) {
                 //Arrete la musique correspondant au moment de vulnérabilité et change l'état des fantomes
+                //Change la stratégie des fantomes pour qu'ils se rapprocahnet à nouveau du pacman
                 ghostVulnerable.stop();
-                for(Agent a : fantomesAgents){
+                for (Agent a : fantomesAgents) {
                     a.setInvulnerable();
+                    if (a.getStrategie() instanceof StrategieBruteEloignement) {
+                        a.setStrategie(new StrategieBruteRapprochement());
+                    }
                 }
-                for(Agent a : pacmanAgents){
+                for (Agent a : pacmanAgents) {
                     a.setVulnerable();
                 }
             }
         }
-        for (Agent a : fantomesAgents){
-            while(true) {
-                if (moveAgent(a, a.getStrategie().jouer(a, maze))) {
-                break;
-                }
-            }
+        for (Agent a : fantomesAgents) {
+            moveAgent(a, a.getStrategie().jouer(a, maze, pacmanAgents, fantomesAgents));
         }
-        for (Agent a : pacmanAgents){
-            while(true) {
-                if (moveAgent(a, a.getStrategie().jouer(a,maze))) {
-                    break;
-                }
-            }
-
+        for (Agent a : pacmanAgents) {
+            moveAgent(a, a.getStrategie().jouer(a, maze, fantomesAgents, pacmanAgents));
         }
+    }
         notifierObservateur();
-
-
     }
 
     /**
@@ -129,7 +131,7 @@ public class PacmanGame extends Game {
      * @param action
      * @return
      */
-    public boolean isLegalMove(Agent agent, AgentAction action){
+    public static boolean isLegalMove(Agent agent, AgentAction action){
         return (!maze.isWall(agent.getPositionCourante().getX()+action.getVx(),agent.getPositionCourante().getY()+action.getVy()));
     }
 
@@ -140,21 +142,14 @@ public class PacmanGame extends Game {
      * @param action
      * @return
      */
-    public boolean moveAgent(Agent agent, AgentAction action){
-        //Si le mouvement n'est pas possible et l'agent n'est pas controlable, le mouvement est refusé
-        if(!isLegalMove(agent,action) && !agent.isControlable()){
-            return false;
-        }
-        else if(!isLegalMove(agent,action) && agent.isControlable()){
-            //Permet à un agent controlable de rester immobile si la direction qu'il a choisi n'est pas possible
-            return true;
-        }
-        else if(agent.isInactif()){
+    public void moveAgent(Agent agent, AgentAction action){
+
+
+        if(agent.isInactif()){
             ((EtatInactif)agent.getEtat()).setWaitingTime(((EtatInactif)agent.getEtat()).getWaitingTime()-1);
             if(((EtatInactif)agent.getEtat()).getWaitingTime()<=0) {
                 agent.setInvulnerable();
             }
-            return true;
         }
 
         if(isLegalMove(agent,action)){
@@ -169,14 +164,19 @@ public class PacmanGame extends Game {
                     food++;
                     eatFood.play();
                     score+=10;
+                    positionFood.add(new PositionItem(newPos.getX(),newPos.getY()));
                 }
                 else if(maze.isCapsule(newPos.getX(),newPos.getY())){
                     maze.setCapsule(newPos.getX(),newPos.getY(),false);
                     compteurVunerable=0;
                     ghostVulnerable.loop();
                     score+=100;
+                    positionCapsule.add(new PositionItem(newPos.getX(),newPos.getY()));
                     for(Agent a : fantomesAgents){
                         a.setVulnerable();
+                        if(a.getStrategie() instanceof StrategieBruteRapprochement){
+                            a.setStrategie(new StrategieBruteEloignement());
+                        }
                     }
                     for(Agent a : pacmanAgents){
                         a.setInvulnerable();
@@ -190,10 +190,7 @@ public class PacmanGame extends Game {
                 agent.setPositionCourante(newPos);
             }
             notifierObservateur();
-            return true;
-        }
-        else{
-            return false;
+
         }
     }
 
@@ -247,7 +244,7 @@ public class PacmanGame extends Game {
     }
 
     /**
-     * Fonction servant à stopper toutes les musiques lors de l'arret du jeu (Java.Model.Game over ou victoire)
+     * Fonction servant à stopper toutes les musiques lors de l'arret du jeu (Game over ou victoire)
      */
     public void stopMusic(){
         for(AudioClip audioClip : listMusic){
@@ -269,13 +266,15 @@ public class PacmanGame extends Game {
         if(pacmanAgents.isEmpty()){
             return true;
         }
-        else if(maze.getInitialfood()!=0 && maze.getInitialfood()==food) {
-            gagnant=true;
-            return true;
-        }else if(maze.getInitialfood()==0 && fantomesAgents.isEmpty()){
+        else if(maze.getInitialfood()!=0 && maze.getInitialfood()==food ) {
             gagnant=true;
             return true;
         }
+        else if(maze.getInitialfood()==0 && fantomesAgents.isEmpty()){
+            gagnant=true;
+            return true;
+        }
+
         return false;
     }
 
@@ -290,12 +289,11 @@ public class PacmanGame extends Game {
     public void death(Agent attaquant,PositionAgent newPos, PositionAgent oldPos){
         if(attaquant.getTypeAgent() == TypeAgent.PACMAN && attaquant.isInvulnerable()) {
             for (Agent fantome : fantomesAgents) {
-                if ((fantome.getPositionCourante().getY() == newPos.getY() && fantome.getPositionCourante().getX() == newPos.getX()) || (fantome.getPositionCourante().getX() == oldPos.getX() && fantome.getPositionCourante().getY() == oldPos.getY())) {
+                if (fantome.isVulnerable() && (fantome.getPositionCourante().getY() == newPos.getY() && fantome.getPositionCourante().getX() == newPos.getX()) || (fantome.getPositionCourante().getX() == oldPos.getX() && fantome.getPositionCourante().getY() == oldPos.getY())) {
                     if(maze.getInitialfood()!=0) {
                         fantome.setInactif();
                         if(fantome.isInactif()){
                             ((EtatInactif)fantome.getEtat()).setWaitingTime(5);
-                            System.out.println("INACTIF");
                         }
                         fantomesAgents.get(fantomesAgents.indexOf(fantome)).setPositionCourante(fantome.getPositionInitiale());
                     }
@@ -321,6 +319,7 @@ public class PacmanGame extends Game {
                 }
             }
         }
+
     }
 
     /**
@@ -330,6 +329,19 @@ public class PacmanGame extends Game {
     public void start(){
         score=0;
         vies=3;
+        if(!positionFood.isEmpty()){
+            for(PositionItem food : positionFood){
+                maze.setFood(food.getX(),food.getY(),true);
+            }
+            positionFood.clear();
+        }
+        if(!positionCapsule.isEmpty()){
+            for(PositionItem capsule : positionCapsule){
+                maze.setCapsule(capsule.getX(),capsule.getY(),true);
+            }
+            positionCapsule.clear();
+        }
+
         if(!maze.getPacman_start().isEmpty()){
             for(int i=0;i<maze.getPacman_start().size();i++){
                 PositionAgent pos = maze.getPacman_start().get(0);
@@ -343,13 +355,9 @@ public class PacmanGame extends Game {
             }
         }
         for (PositionAgent pos : maze.getGhosts_start()){
-            fantomesAgents.add(FabriqueAgents.fabriqueFantome(pos));
+            fantomesAgents.add(FabriqueAgents.fabriqueFantomeBrute(pos));
         }
-        //On rend le premier pacman controlable et on lui assigne une stratégiejoueur1
-        if(!pacmanAgents.isEmpty()){
-            pacmanAgents.get(0).setControlable(true);
-            pacmanAgents.get(0).setStrategie(StrategieJoueur1.getInstance());
-        }
+
     }
 
 

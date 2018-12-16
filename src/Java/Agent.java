@@ -13,18 +13,15 @@ public class Agent {
     private PositionAgent positionCourante;
     private PositionAgent positionInitiale;
     private Etat etat;
-    private Strategie strategie = new StrategieRandom();
+    private Strategie strategie;
     private boolean controlable = false;
-
-    private int nbVie=0;
-
-
 
     public Agent(TypeAgent typeAgent, PositionAgent positionCourante, Etat etat) {
         this.typeAgent = typeAgent;
         this.positionInitiale = positionCourante;
         this.positionCourante = positionCourante;
         this.etat = etat;
+        this.strategie = new StrategieRandom();
     }
 
 

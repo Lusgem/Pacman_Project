@@ -65,7 +65,7 @@ public abstract class Game implements Runnable, Sujet {
     }
 
     public void step(){
-        if(compteur<tours_max) {
+        if(compteur<tours_max && !isOver()) {
             compteur++;
             notifierObservateur();
             takeTurn();

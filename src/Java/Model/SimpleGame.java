@@ -18,7 +18,7 @@ public class SimpleGame extends Game{
     }
 
     protected void gameOver() {
-        System.out.println("Java.Model.Game Over");
+        System.out.println("Game Over");
     }
 
     public void pause() {
