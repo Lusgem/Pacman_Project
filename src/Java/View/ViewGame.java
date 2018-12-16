@@ -107,7 +107,7 @@ public class ViewGame extends JFrame implements Observateur {
                 posPacman.add(a.getPositionCourante());
             }
             pacmanPanel.setPacmans_pos(posPacman);
-            if(!((PacmanGame) game).getFantomesAgents().isEmpty() && ((PacmanGame) game).getFantomesAgents().get(0).getEtat() instanceof EtatVulnerable){
+            if(!((PacmanGame) game).getFantomesAgents().isEmpty() && ((PacmanGame) game).resteFantomesVulnerables()){
                 pacmanPanel.setGhostsScarred(true);
             }
             else

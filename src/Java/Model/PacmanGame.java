@@ -382,6 +382,10 @@ public class PacmanGame extends Game {
         }
     }
 
+    /**
+     * Permet de vérifier si il reste des fantomes vulnérables
+     * @return
+     */
     public boolean resteFantomesVulnerables(){
         for(Agent fantome : fantomesAgents){
             if(fantome.isVulnerable()){
