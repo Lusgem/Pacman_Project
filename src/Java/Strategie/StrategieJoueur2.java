@@ -8,6 +8,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
+/**
+ * Stratégie pour un deuxième joueur, il incarnera un fantome et utilisera ZQSD pour le faire bouger
+ */
 public class StrategieJoueur2 implements Strategie, KeyListener {
     AgentAction action = new AgentAction(Maze.WEST);
     private static StrategieJoueur2 strategieJoueur2 = new StrategieJoueur2();

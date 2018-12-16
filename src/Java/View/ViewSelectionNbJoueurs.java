@@ -19,7 +19,7 @@ public class ViewSelectionNbJoueurs extends JFrame{
         bG.add(un_joueur);
         bG.add(deux_joueurs);
         setSize(200,100);
-        setLayout( new FlowLayout());
+        setLayout( new GridLayout(3,1));
         Dimension windowSize = getSize();
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         Point centerPoint = ge.getCenterPoint();

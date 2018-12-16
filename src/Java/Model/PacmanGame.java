@@ -84,7 +84,7 @@ public class PacmanGame extends Game {
             gameOver();
         }
         else {
-        if (!fantomesAgents.isEmpty() && fantomesAgents.get(0).isVulnerable()) {
+        if (!fantomesAgents.isEmpty() && resteFantomesVulnerables()) {
             compteurVunerable++;
             if (compteurVunerable >= vunerableTime) {
                 //Arrete la musique correspondant au moment de vulnérabilité et change l'état des fantomes
@@ -380,6 +380,15 @@ public class PacmanGame extends Game {
                 }
             }
         }
+    }
+
+    public boolean resteFantomesVulnerables(){
+        for(Agent fantome : fantomesAgents){
+            if(fantome.isVulnerable()){
+                return true;
+            }
+        }
+        return false;
     }
 
 
