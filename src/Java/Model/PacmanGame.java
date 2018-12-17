@@ -20,7 +20,7 @@ public class PacmanGame extends Game {
     private static Maze maze;
     private ArrayList<Agent> pacmanAgents = new ArrayList<Agent>();
     private ArrayList<Agent> fantomesAgents = new ArrayList<Agent>();
-    private int nbJoueurs=1;
+    private int nbJoueurs;
 
     private ArrayList<PositionItem> positionFood = new ArrayList<>();
     private ArrayList<PositionItem> positionCapsule = new ArrayList<>();
@@ -66,8 +66,6 @@ public class PacmanGame extends Game {
         listMusic.add(deathOfGhost);
         mainTheme.play();
         start();
-
-
     }
 
     @Override
@@ -161,7 +159,6 @@ public class PacmanGame extends Game {
                 agent.setInvulnerable();
             }
         }
-
         if(isLegalMove(agent,action)){
             PositionAgent newPos = new PositionAgent(agent.getPositionCourante().getX()+action.getVx(),agent.getPositionCourante().getY()+action.getVy(),action.getDirection());
             if(agent.getTypeAgent() == TypeAgent.PACMAN) {

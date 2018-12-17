@@ -39,9 +39,4 @@ public class ControleurPacmanGame implements ControleurGame {
         game.setTime(time);
     }
 
-    public void movePlayer(Agent a, AgentAction action){
-        if(game instanceof PacmanGame){
-            ((PacmanGame) game).moveAgent(a,action);
-        }
-    }
 }
