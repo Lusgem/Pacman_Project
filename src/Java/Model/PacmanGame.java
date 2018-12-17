@@ -32,6 +32,7 @@ public class PacmanGame extends Game {
     private AudioClip eatFood;
     private AudioClip ghostVulnerable;
     private AudioClip deathOfPacman;
+    private AudioClip deathOfGhost;
     private ArrayList<AudioClip> listMusic = new ArrayList<>();
 
 
@@ -57,10 +58,12 @@ public class PacmanGame extends Game {
         eatFood = initMusic("src/Music/pacman_chomp.wav");
         ghostVulnerable = initMusic("src/Music/pacman_intermission.wav");
         deathOfPacman = initMusic("src/Music/pacman_death.wav");
+        deathOfGhost = initMusic("src/Music/pacman_eatghost.wav");
         listMusic.add(mainTheme);
         listMusic.add(ghostVulnerable);
         listMusic.add(eatFood);
         listMusic.add(deathOfPacman);
+        listMusic.add(deathOfGhost);
         mainTheme.play();
         start();
 
@@ -305,6 +308,7 @@ public class PacmanGame extends Game {
         if(attaquant.getTypeAgent() == TypeAgent.PACMAN && attaquant.isInvulnerable()) {
             for (Agent fantome : fantomesAgents) {
                 if (fantome.isVulnerable() && (fantome.getPositionCourante().getY() == newPos.getY() && fantome.getPositionCourante().getX() == newPos.getX()) || (fantome.getPositionCourante().getX() == oldPos.getX() && fantome.getPositionCourante().getY() == oldPos.getY())) {
+                    deathOfGhost.play();
                     if(maze.getInitialfood()!=0) {
                         fantome.setInactif();
                         if(fantome.isInactif()){
