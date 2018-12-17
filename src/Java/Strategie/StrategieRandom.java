@@ -7,6 +7,9 @@ import Java.Model.PacmanGame;
 
 import java.util.ArrayList;
 
+/**
+ * Stratégie aléatoire
+ */
 public class StrategieRandom implements Strategie {
 
     int nombreAleatoire;

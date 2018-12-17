@@ -54,6 +54,7 @@ public class TestPacmanComplet {
 
 
         // Possibilité de chosir un mode deux joueurs si il y a au moins un fantome dans le labyrinthe choisi
+        // Sinon le mode 1 joueur est lancé par défaut
         if(!maze.getGhosts_start().isEmpty()){
             ViewSelectionNbJoueurs selectionNbJoueurs = new ViewSelectionNbJoueurs();
             selectionNbJoueurs.getValider().addActionListener(new ActionListener() {

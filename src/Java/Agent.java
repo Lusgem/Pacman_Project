@@ -81,7 +81,10 @@ public class Agent {
         return etat instanceof EtatInactif;
     }
 
-    public void setInactif(){
+    public void setInactif() throws Exception {
+        if (typeAgent==TypeAgent.PACMAN){
+            throw new Exception();
+        }
         setEtat(new EtatInactif());
     }
 
