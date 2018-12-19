@@ -72,6 +72,7 @@ public class PacmanGame extends Game {
     protected void initializegame() {
         pacmanAgents.clear();
         fantomesAgents.clear();
+
         start();
         notifierObservateur();
     }
@@ -124,7 +125,7 @@ public class PacmanGame extends Game {
     @Override
     protected void gameOver() {
         stopMusic();
-        init();
+        //init();
         stop();
         over=true;
     }
@@ -159,6 +160,7 @@ public class PacmanGame extends Game {
                 agent.setInvulnerable();
             }
         }
+
         if(isLegalMove(agent,action)){
             PositionAgent newPos = new PositionAgent(agent.getPositionCourante().getX()+action.getVx(),agent.getPositionCourante().getY()+action.getVy(),action.getDirection());
             if(agent.getTypeAgent() == TypeAgent.PACMAN) {
@@ -236,6 +238,12 @@ public class PacmanGame extends Game {
     public void setNbJoueurs(int nbJoueurs) {
         this.nbJoueurs = nbJoueurs;
     }
+
+    public boolean isGagnant() {
+        return gagnant;
+    }
+
+
 
     /**
      * Fonction permettant d'initialiser une musique à partir d'un fichier
@@ -345,6 +353,10 @@ public class PacmanGame extends Game {
     public void start(){
         score=0;
         vies=3;
+        food=0;
+        gagnant=false;
+        running=false;
+        over =false;
         if(!positionFood.isEmpty()){
             for(PositionItem food : positionFood){
                 maze.setFood(food.getX(),food.getY(),true);

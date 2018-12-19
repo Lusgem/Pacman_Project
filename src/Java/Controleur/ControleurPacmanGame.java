@@ -1,10 +1,6 @@
 package Java.Controleur;
 
-import Java.Agent;
-import Java.AgentAction;
 import Java.Model.Game;
-import Java.Model.PacmanGame;
-import Java.PositionAgent;
 
 public class ControleurPacmanGame implements ControleurGame {
 

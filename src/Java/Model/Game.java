@@ -60,6 +60,8 @@ public abstract class Game implements Runnable, Sujet {
 
     public void init(){
         compteur = 0;
+        running=false;
+        over=false;
         notifierObservateur();
         initializegame();
     }
@@ -107,5 +109,9 @@ public abstract class Game implements Runnable, Sujet {
 
     public int getTours_max() {
         return tours_max;
+    }
+
+    public void setOver(boolean over) {
+        this.over = over;
     }
 }

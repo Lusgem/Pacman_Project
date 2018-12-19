@@ -86,6 +86,8 @@ public class ViewGame extends JFrame implements Observateur {
         }
 
         setVisible(true);
+
+
     }
 
     /**
@@ -114,6 +116,21 @@ public class ViewGame extends JFrame implements Observateur {
                 pacmanPanel.setGhostsScarred(false);
 
             pacmanPanel.repaint();
+
+            if(game.isOver()){
+                String messagedefin="";
+                if(((PacmanGame) game).isGagnant()){
+                    messagedefin = "Félicitation !!!!";
+                }
+                else {
+                    messagedefin = "Game Over";
+                }
+                JOptionPane.showMessageDialog(this,
+                        messagedefin,
+                        "Fin du jeu",
+                        JOptionPane.PLAIN_MESSAGE);
+                game.setOver(false);
+            }
 
         }
 
